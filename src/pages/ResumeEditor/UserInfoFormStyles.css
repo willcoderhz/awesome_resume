@@ -1,0 +1,96 @@
+/* UserInfoFormStyles.css */
+
+.userInfoInput {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    border: 1px solid #e1e1e1;
+}
+
+.userInfoInput h3 {
+    font-weight: 600;
+    font-size: 18px;
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+.userInfoInput input,
+.userInfoInput textarea {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.userInfoInput textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.userInfoInput input::placeholder,
+.userInfoInput textarea::placeholder {
+    color: #95a5a6;
+}
+
+.userInfoInput input:focus,
+.userInfoInput textarea:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+.userInfoInput input.Name, 
+.userInfoInput input.Phone,
+.userInfoInput input.Email,
+.userInfoInput input.Sex, 
+.userInfoInput input.City,
+.userInfoInput input.Age
+{
+    width: 25.7%;
+    margin: 0px 4px;
+}
+
+.userInfoInput input.school, 
+.userInfoInput input.major,
+.userInfoInput input.degree,
+.userInfoInput input.graduationDate
+{
+    width: 15.5%;
+    margin: 0px 4px;
+}
+
+.userInfoInput input.companyName, 
+.userInfoInput input.title,
+.userInfoInput input.workTime
+{
+    width: 22.4%;
+    margin: 4px 4px;
+}
+
+.userInfoInput input.projectName, 
+.userInfoInput input.projectTime
+{
+    width: 36.6%;
+    margin: 4px 4px;
+}
+
+.userInfoInput textarea.workExperience, 
+.userInfoInput textarea.projectDescription
+{
+    width: 79%;
+    margin: 4px 4px;
+}
+
+.userInfoInput input.links
+
+{
+    width: 78%;
+    margin: 4px 4px;
+}

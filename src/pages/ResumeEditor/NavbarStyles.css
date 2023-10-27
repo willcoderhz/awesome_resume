@@ -1,0 +1,33 @@
+/* NavbarStyles.css */
+
+.navbarStyled {
+    background-color: #f4f4f463; 
+    height: 100%;
+    width: 200px;  
+    padding: 20px 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); 
+    position: fixed; 
+    top: 0;
+    left: 0;
+  }
+  
+  .navbarStyled ul {
+    list-style-type: none; 
+    padding: 0;
+  }
+  
+  .navbarStyled li {
+    font-size: 18px; 
+    font-weight: 500;
+    margin-bottom: 25px; 
+    text-align: left; 
+    cursor: pointer; 
+    transition: color 0.3s;
+    writing-mode: vertical-lr;
+    padding-left: 9%;
+  }
+  
+  .navbarStyled li:hover {
+    color: #007BFF; 
+  }
+  
