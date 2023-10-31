@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-<<<<<<< HEAD
-import UserInfoFormView from './UesrInfoFormView';
-=======
 import UserInfoFormView from './UesrInfoFormStructure';
->>>>>>> master
 
 
 
