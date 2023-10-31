@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import ResumeEditor from './pages/ResumeEditor/structures/ResumeEditor.tsx'
+=======
+import ResumeEditor from './pages/ResumeEditor/structures/ResumeEditorDisplay.tsx'
+>>>>>>> master
 import {  Route,Routes } from "react-router-dom";
 
 
