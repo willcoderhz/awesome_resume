@@ -1,11 +1,11 @@
 import React from 'react';
 
-import BasicInfo from '../inputparts/BasicInfo';
-import SelfIntroduction from '../inputparts/SelfIntroductionInfo';
-import EducationInfo from '../inputparts/EducationInfo';
-import WorkingExperienceInfo from '../inputparts/WorkingExperienceInfo';
-import ProjectsInfo from '../inputparts/ProjectsInfo';
-import LinksInfo from '../inputparts/LinksInfo';
+import BasicInfo from './inputparts/BasicInfo';
+import SelfIntroduction from './inputparts/SelfIntroductionInfo';
+import EducationInfo from './inputparts/EducationInfo';
+import WorkingExperienceInfo from './inputparts/WorkingExperienceInfo';
+import ProjectsInfo from './inputparts/ProjectsInfo';
+import LinksInfo from './inputparts/LinksInfo';
 
 const UserInfoFormView = ({
     handleInputChange,

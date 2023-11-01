@@ -1,4 +1,4 @@
-import ResumeEditor from './pages/ResumeEditor/structures/ResumeEditorDisplay.tsx'
+import ResumeEditor from './views/ResumeEditor/ResumeEditorDisplay.tsx'
 import {  Route,Routes } from "react-router-dom";
 
 

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import Navbar from './Navbar';
-import UserInfoForm from './UserInfoForm';
-import ResumePreview from '../../../templates/Amode/resumeModel_A';
-
+import Navbar from '../../components/build/LeftSidebar/Navbar';
+import UserInfoForm from '../../components/build/Center/UserInfoForm';
+import TemplateSwitcher from '../../templates/TemplateSwitcher'; 
 
 
 const ResumeEditor = () => {
@@ -12,7 +11,7 @@ const ResumeEditor = () => {
     <div >
       <Navbar  />
       <UserInfoForm onInfoChange={setUserInfo}  />
-      <ResumePreview userInfo={userInfo}  />
+      <TemplateSwitcher userInfo={userInfo} />
     </div>
   );
 };

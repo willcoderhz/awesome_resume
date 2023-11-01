@@ -9,6 +9,7 @@ const Navbar = () => {
          
           <li className="text-lg font-medium mb-6 text-left cursor-pointer transition-colors duration-300 write-mode-vertical pl-2 hover:text-blue-500">编辑</li>
           <li className="text-lg font-medium mb-6 text-left cursor-pointer transition-colors duration-300 write-mode-vertical pl-2 hover:text-blue-500">模板</li>
+         
           <li className="text-lg font-medium mb-6 text-left cursor-pointer transition-colors duration-300 write-mode-vertical pl-2 hover:text-blue-500">导出</li>
           <li className="text-lg font-medium mb-6 text-left cursor-pointer transition-colors duration-300 write-mode-vertical pl-2 hover:text-blue-500">
           <Link to="/">首页</Link>

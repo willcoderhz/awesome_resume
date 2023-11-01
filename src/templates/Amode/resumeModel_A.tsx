@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ResumePreview = ({ userInfo }) => {
+const ResumeModel_A = ({ userInfo }) => {
     return (
         <div className="fixed top-0 right-0 h-full w-45 bg-white p-8 overflow-y-auto shadow-2xl border-l-2 border-gray-300">
         <h1 className="text-5xl font-bold mb-6 text-gray-800 pb-4">{userInfo.name}</h1>
@@ -75,6 +75,6 @@ const ResumePreview = ({ userInfo }) => {
     );
 };
 
-export default ResumePreview;
+export default ResumeModel_A;
 
 
