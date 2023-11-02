@@ -1,4 +1,6 @@
 import React from 'react';
+import { Input, Button, Typography } from 'antd';
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 
 interface Project {
   projectName: string;
@@ -25,8 +27,8 @@ const ProjectsInfo: React.FC<Props> = ({
   handleDeleteProject,
   addProject
 }) => (
-    <div className="bg-gray-100 p-6  shadow-md ml-0 w-2/5 my-0">
-    <h3 className="text-xl font-semibold mb-4 ml-1">项目经验</h3>
+  <div className="bg-gray-50 p-4 ml-0 w-full" id="projectsInfo">
+    <Typography.Title level={3} className="mb-4 ml-1"  >项目经验</Typography.Title>
     {projects.map((project, index) => (
       <div 
         key={index}
@@ -36,43 +38,47 @@ const ProjectsInfo: React.FC<Props> = ({
         onDragOver={handleDragOver}
         className="mb-4"
       >
-        <input 
-            name="projectName" 
-            placeholder="项目名称" 
-            value={project.projectName}
-            onChange={e => handleInputChange(e, index)}
-            className='border rounded p-2 w-40 mb-2 mx-1'
+        <Input 
+          name="projectName" 
+          placeholder="项目名称" 
+          value={project.projectName}
+          onChange={e => handleInputChange(e, index)}
+          className='border rounded p-2 mb-2 w-9/20 mr-1'
         />
-        <input 
-            name="projectTime" 
-            placeholder="项目时间" 
-            value={project.projectTime}
-            onChange={e => handleInputChange(e, index)}
-            className='border rounded p-2 w-45 mb-2 mx-1'
+        <Input 
+          name="projectTime" 
+          placeholder="项目时间" 
+          value={project.projectTime}
+          onChange={e => handleInputChange(e, index)}
+          className='border rounded p-2 mb-2 w-9/20 mr-1'
         />
-        <textarea 
-            name="projectDescription" 
-            placeholder="描述您参与过的项目" 
-            value={project.projectDescription}
-            onChange={e => handleInputChange(e, index)}
-            className='border rounded p-2 w-full h-32 my-2 mx-1'
+        <Input.TextArea 
+          name="projectDescription" 
+          placeholder="描述您参与过的项目" 
+          value={project.projectDescription}
+          onChange={e => handleInputChange(e as any, index)}
+          className='mb-2 w-full'
+          autoSize={{ minRows: 3, maxRows: 6 }}
         />
-        <button 
-            onClick={() => handleDeleteProject(index)}
-            className="mx-2 bg-red-500 hover:bg-red-700 text-white font-semibold text-sm py-1 px-2 rounded focus:outline-none focus:shadow-outline-red transition duration-150 ease-in-out"
+        <Button 
+          type="default" 
+          icon={<DeleteOutlined />} 
+          onClick={() => handleDeleteProject(index)} 
+          className="mr-2 bg-red-600 text-white hover:bg-red-700 active:bg-red-800"
         >
-            删除
-        </button>
+          删除
+        </Button>
       </div>
     ))}
-    <button 
-      onClick={addProject}
-      className="mx-2 bg-blue-500 hover:bg-blue-700 text-white font-semibold text-sm py-1 px-2 rounded focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out"
+    <Button 
+        type="default" 
+        icon={<PlusOutlined />} 
+        onClick={addProject}
+        className="bg-blue-500 text-white hover:bg-blue-700 active:bg-blue-800"
     >
-      添加
-    </button>
-</div>
-
+        添加
+    </Button>
+  </div>
 );
 
 export default ProjectsInfo;

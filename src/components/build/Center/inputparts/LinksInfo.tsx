@@ -1,6 +1,7 @@
 // LinksInfo.tsx
-
 import React from 'react';
+import { Input, Button, Typography } from 'antd';
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 
 interface Link {
   url: string;
@@ -25,8 +26,8 @@ const LinksInfo: React.FC<Props> = ({
   handleDeleteLink,
   addLink
 }) => (
-  <div className="bg-gray-100 p-6 rounded-lg shadow-md ml-0 w-2/5 my-0">
-    <h3 className="text-xl font-semibold mb-4 ml-1">相关链接</h3>
+  <div className="bg-gray-50 p-4 rounded ml-0 w-full" id="linksInfo">
+    <Typography.Title level={3} className="mb-4 ml-1"  >相关链接</Typography.Title>
     {links.map((link, index) => (
       <div 
         key={index}
@@ -36,29 +37,33 @@ const LinksInfo: React.FC<Props> = ({
         onDragOver={handleDragOver}
         className="mb-4 flex items-center"
       >
-        <input 
-            name="url" 
-            placeholder="请输入相关链接   http://......" 
-            value={link.url}
-            onChange={e => handleInputChange(e, index)}
-            className='border rounded p-2 flex-grow mx-1'
+        <Input 
+          name="url" 
+          placeholder="请输入相关链接   http://......" 
+          value={link.url}
+          onChange={e => handleInputChange(e, index)}
+          className='border rounded p-2 flex-grow mx-1'
         />
-        <button 
-            onClick={() => handleDeleteLink(index)}
-            className="mx-2 bg-red-500 hover:bg-red-700 text-white font-semibold text-sm py-1 px-2 rounded focus:outline-none focus:shadow-outline-red transition duration-150 ease-in-out"
+        <Button 
+          type="default" 
+          icon={<DeleteOutlined />} 
+          onClick={() => handleDeleteLink(index)} 
+          className="mr-2 bg-red-600 text-white hover:bg-red-700 active:bg-red-800"
         >
-            删除
-        </button>
+          删除
+        </Button>
       </div>
     ))}
-    <button 
+    <Button 
+      type="default" 
+      icon={<PlusOutlined />} 
       onClick={addLink}
-      className="mx-2 bg-blue-500 hover:bg-blue-700 text-white font-semibold text-sm py-1 px-2 rounded focus:outline-none focus:shadow-outline-blue transition duration-150 ease-in-out"
+      className="bg-blue-500 text-white hover:bg-blue-700 active:bg-blue-800"
     >
       添加链接
-    </button>
-</div>
-
+    </Button>
+  </div>
 );
 
 export default LinksInfo;
+

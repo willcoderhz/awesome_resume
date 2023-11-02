@@ -29,12 +29,13 @@ const UserInfoFormView = ({
     addLink
 }) => {
     return (
-      <div className="ml-20 z-10">
+      <div className="ml-0 z-10 w-35">
       <div className="userInfoInput">
 
       <BasicInfo handleInputChange={handleInputChange} />
-      <SelfIntroduction handleInputChange={handleInputChange} />
-      <EducationInfo 
+      <SelfIntroduction   handleInputChange={handleInputChange} />
+      <EducationInfo
+      
       educations={educations}
       handleDragStart={handleDragStart}
       handleEducationDrop={handleEducationDrop}
@@ -44,6 +45,7 @@ const UserInfoFormView = ({
       addEducation={addEducation}
       />
       <WorkingExperienceInfo
+     
           workExperiences={workExperiences}
           handleDragStart={handleDragStart}
           handleWorkDrop={handleWorkDrop}
@@ -54,6 +56,7 @@ const UserInfoFormView = ({
         />
 
         <ProjectsInfo
+        
           projects={projects}
           handleDragStart={handleDragStart}
           handleProjectDrop={handleProjectDrop}
@@ -64,6 +67,7 @@ const UserInfoFormView = ({
         />
 
 <LinksInfo
+
           links={links}
           handleDragStart={handleDragStart}
           handleLinkDrop={handleLinkDrop}

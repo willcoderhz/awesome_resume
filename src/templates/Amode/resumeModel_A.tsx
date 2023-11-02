@@ -1,77 +1,61 @@
 import React from 'react';
+import { Typography, Divider, Row, Col, Tag } from 'antd';
+import { PhoneOutlined, MailOutlined, UserOutlined, EnvironmentOutlined, GiftFilled } from '@ant-design/icons';
+
+const { Title, Paragraph, Text } = Typography;
 
 const ResumeModel_A = ({ userInfo }) => {
     return (
-        <div className="fixed top-0 right-0 h-full w-45 bg-white p-8 overflow-y-auto shadow-2xl border-l-2 border-gray-300">
-        <h1 className="text-5xl font-bold mb-6 text-gray-800 pb-4">{userInfo.name}</h1>
-    
-        <div className="mb-10 flex items-center space-x-0 text-gray-600 border-b border-gray-300 pb-2">
-            <p className="flex items-center space-x-0">
-                <i className="fas fa-phone-alt"></i>
-                <span>{userInfo.phone}</span>
-            </p>
-            <p className="flex items-center space-x-3">
-                <i className="fas fa-envelope"></i>
-                <span>{userInfo.email}</span>
-            </p>
-            <p className="flex items-center space-x-3">
-                <i className="fas fa-user"></i>
-                <span>{userInfo.sex}</span>
-            </p>
-            <p className="flex items-center space-x-3">
-                <i className="fas fa-map-marker-alt"></i>
-                <span>{userInfo.city}</span>
-            </p>
-            <p className="flex items-center space-x-3">
-                <i className="fas fa-birthday-cake"></i>
-                <span>{userInfo.age}</span>
-            </p>
-        </div>
-    
-        <h3 className="text-3xl font-semibold mb-4 text-gray-800 pb-2 border-b border-gray-300">自我介绍</h3>
-        <p className="mb-10 text-gray-700 leading-relaxed">{userInfo.introduction}</p>
-    
-        <h3 className="text-3xl font-semibold mb-4 text-gray-800 pb-2 border-b border-gray-300">教育背景</h3>
-        {userInfo.educations && userInfo.educations.map((education, index) => (
-            <div key={index} className="mb-8">
-                <p className="text-gray-700 leading-relaxed">
-                    {education.school}&nbsp; | &nbsp;
-                    {education.major}&nbsp; | &nbsp;
-                    {education.degree}&nbsp; | &nbsp;
-                    {education.graduationDate}
-                </p>
-            </div>
-        ))}
-    
-        <h3 className="text-3xl font-semibold mb-4 text-gray-800 pb-2 border-b border-gray-300">工作经历</h3>
-        {userInfo.workExperiences && userInfo.workExperiences.map((work, index) => (
-            <div key={index} className="mb-8">
-                <p className="mb-2 font-semibold text-gray-800">{work.companyName}&nbsp; | &nbsp;{work.title}&nbsp; | &nbsp;{work.workTime}</p>
-                <p className="text-gray-700 leading-relaxed">{work.workExperience}</p>
-            </div>
-        ))}
-    
-        <h3 className="text-3xl font-semibold mb-4 text-gray-800 pb-2 border-b border-gray-300">项目经验</h3>
-        {userInfo.projects && userInfo.projects.map((project, index) => (
-            <div key={index} className="mb-8">
-                <p className="mb-2 font-semibold text-gray-800">{project.projectName}&nbsp; | &nbsp;{project.projectTime}</p>
-                <p className="text-gray-700 leading-relaxed">{project.projectDescription}</p>
-            </div>
-        ))}
-    
-        <h3 className="text-3xl font-semibold mb-4 text-gray-800 pb-2 border-b border-gray-300">相关链接</h3>
-        {userInfo.links && userInfo.links.map((link, index) => (
-            <div key={index} className="mb-8">
-                <p className="text-gray-700 leading-relaxed hover:text-gray-800 transition">
+        <div >
+            <Title level={1} className="text-gray-800 mb-5">{userInfo.name}</Title>
+
+            <Row gutter={16} className="mb-8">
+            <Col><Tag icon={<PhoneOutlined />} color="black">{userInfo.phone}</Tag></Col>
+            <Col><Tag icon={<MailOutlined />} color="black">{userInfo.email}</Tag></Col>
+            <Col><Tag icon={<UserOutlined />} color="black">{userInfo.sex}</Tag></Col>
+            <Col><Tag icon={<EnvironmentOutlined />} color="black">{userInfo.city}</Tag></Col>
+            <Col><Tag icon={<GiftFilled />} color="black">{userInfo.age}</Tag></Col>
+            </Row>
+
+            <Title level={3} className="text-gray-800 mb-3">自我介绍</Title>
+            <Paragraph className="text-gray-700 mb-8">{userInfo.introduction}</Paragraph>
+
+            <Title level={3} className="text-gray-800 mb-3">教育背景</Title>
+            {userInfo.educations && userInfo.educations.map((education, index) => (
+                <Text key={index} className="block mb-6 text-gray-700 leading-relaxed">
+                    <strong>{education.school}</strong> | {education.major} | {education.degree} | {education.graduationDate}
+                </Text>
+            ))}
+
+            <Divider className="my-5" />
+
+            <Title level={3} className="text-gray-800 mb-3">工作经历</Title>
+            {userInfo.workExperiences && userInfo.workExperiences.map((work, index) => (
+                <div key={index} className="mb-8">
+                    <Text className="block mb-2 font-semibold text-gray-800">{work.companyName} | {work.title} | {work.workTime}</Text>
+                    <Paragraph className="text-gray-700">{work.workExperience}</Paragraph>
+                </div>
+            ))}
+
+            <Divider className="my-5" />
+
+            <Title level={3} className="text-gray-800 mb-3">项目经验</Title>
+            {userInfo.projects && userInfo.projects.map((project, index) => (
+                <div key={index} className="mb-8">
+                    <Text className="block mb-2 font-semibold text-gray-800">{project.projectName} | {project.projectTime}</Text>
+                    <Paragraph className="text-gray-700">{project.projectDescription}</Paragraph>
+                </div>
+            ))}
+
+            <Divider className="my-5" />
+
+            <Title level={3} className="text-gray-800 mb-3">相关链接</Title>
+            {userInfo.links && userInfo.links.map((link, index) => (
+                <Text key={index} className="block mb-6 text-blue-600 hover:text-blue-800">
                     <a href={link.url} target="_blank" rel="noopener noreferrer">{link.url}</a>
-                </p>
-            </div>
-        ))}
-    </div>
-    
-
-    
-
+                </Text>
+            ))}
+        </div>
     );
 };
 

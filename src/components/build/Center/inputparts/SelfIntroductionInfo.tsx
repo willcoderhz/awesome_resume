@@ -1,4 +1,5 @@
 import React from 'react';
+import { Input, Typography } from 'antd';
 
 type SelfIntroductionProps = {
     handleInputChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
@@ -6,16 +7,19 @@ type SelfIntroductionProps = {
 
 const SelfIntroduction: React.FC<SelfIntroductionProps> = ({ handleInputChange }) => {
     return (
-        <div className="bg-gray-100 p-6  shadow-md ml-0 w-2/5 my-0">
-            <h3 className="text-xl font-semibold mb-4 ml-1">自我介绍</h3>
-            <textarea 
+        <div id="selfIntroduction" className="bg-gray-50 p-4 ml-0 w-full">
+            <Typography.Title level={3} className="mb-4 ml-1">自我介绍</Typography.Title>
+
+            <Input.TextArea 
                 name="introduction" 
-                placeholder="简短地描述自己" 
+                placeholder="例如：我是一名前端开发者，有3年的工作经验,能够熟练掌握React及Node.js..." 
                 onChange={handleInputChange}
-                className='border rounded p-2 w-full h-32 mx-1'
+                className='border rounded p-2 w-full'
+                autoSize={{ minRows: 4, maxRows: 6 }}
             />
         </div>
     );
 }
 
 export default SelfIntroduction;
+

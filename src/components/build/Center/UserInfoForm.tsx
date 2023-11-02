@@ -167,6 +167,7 @@ const handleLinkDrop = (e, index) => {
           handleWorkDrop={handleWorkDrop}
           handleProjectDrop={handleProjectDrop}
           handleLinkDrop={handleLinkDrop}
+
       />
   );
 };

@@ -25,10 +25,10 @@ const TemplateSwitcher = ({ userInfo }) => {
 
   return (
     <div>
-      {/* 这里可以添加切换模板的按钮或其他逻辑 */}
+      {/* 这里可以添加切换模板的按钮或其他逻辑 
       <div className="flex justify-start space-x-6 pl-6">
   <button 
-    className="py-2 px-5 border-2 border-gray-500 text-gray-500 hover:bg-blue-500 hover:text-white transition duration-300 ease-in-out"
+    className="ml-24 py-2 px-5 border-2 border-gray-500 text-gray-500 hover:bg-blue-500 hover:text-white transition duration-300 ease-in-out"
     onClick={() => setCurrentTemplate('A')}
   >
     选择模板A
@@ -45,7 +45,7 @@ const TemplateSwitcher = ({ userInfo }) => {
   >
     选择模板C
   </button>
-</div>
+</div>*/}
 
 
       <ResumeComponent userInfo={userInfo} />
