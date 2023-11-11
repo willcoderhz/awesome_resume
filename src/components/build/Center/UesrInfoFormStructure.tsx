@@ -29,7 +29,7 @@ const UserInfoFormView = ({
     addLink
 }) => {
     return (
-      <div className="ml-0 z-10 w-35">
+      <div className="ml-0 z-10 w-45">
       <div className="userInfoInput">
 
       <BasicInfo handleInputChange={handleInputChange} />
