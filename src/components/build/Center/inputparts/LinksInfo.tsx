@@ -65,13 +65,13 @@ const LinksInfo: React.FC = () => {
   const columns: ColumnsType<DataType> = [
     {
       key: 'sort',
-      title: '其他链接',
+      title: '自定义内容',
       // This column is for drag handle
     },
     {
-      
+
       dataIndex: 'url',
-      
+
       render: (url: string, record: DataType) => {
         if (record.isEditing) {
           return (

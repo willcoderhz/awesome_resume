@@ -14,49 +14,52 @@ const BasicInfo: React.FC<BasicInfoProps> = ({ handleInputChange, handleDateChan
             <Form layout="horizontal">
                 <Row gutter={24}>
                     <Col span={12}>
-                        <Form.Item label="求职职位" name="position">
+                        <Form.Item label="求职职位" colon={false} name="position">
                             <Input onChange={handleInputChange} className="w-full" />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item label="照片位置" name="photo">
-                            <Input onChange={handleInputChange} className="w-full" />
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Row gutter={24}>
-                    <Col span={12}>
-                        <Form.Item label="姓名" name="name">
-                            <Input onChange={handleInputChange} className="w-full" />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item label="联系电话" name="phone">
+                        <Form.Item label="照片位置" colon={false} name="photo">
                             <Input onChange={handleInputChange} className="w-full" />
                         </Form.Item>
                     </Col>
                 </Row>
                 <Row gutter={24}>
                     <Col span={12}>
-                        <Form.Item label="所在城市" name="city">
+                        <Form.Item label="姓名" colon={false} name="name">
                             <Input onChange={handleInputChange} className="w-full" />
                         </Form.Item>
                     </Col>
+
                     <Col span={12}>
-                        <Form.Item label="微信号" name="sex">
+                        <Form.Item label="工作地方" colon={false} name="city">
                             <Input onChange={handleInputChange} className="w-full" />
                         </Form.Item>
                     </Col>
                 </Row>
                 <Row gutter={24}>
                     <Col span={12}>
-                        <Form.Item label="电子邮箱" name="email">
+                        <Form.Item label="联系电话" colon={false} name="phone">
                             <Input onChange={handleInputChange} className="w-full" />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item label="出生年月" name="age">
-                            <MonthPicker format="YYYY-MM" onChange={(date, dateString) => handleDateChange(dateString)} className="w-full" />
+                        <Form.Item label="电子邮箱" colon={false} name="email">
+                            <Input onChange={handleInputChange} className="w-full" />
+                        </Form.Item>
+                    </Col>
+
+                </Row>
+                <Row gutter={24}>
+                    <Col span={12}>
+                        <Form.Item label="出生年月" colon={false} name="age">
+                            {/*<DatePicker style={{ width: 200 }} onChange={(date, dateString) => handleDateChange(dateString)} className="w-full" />*/}
+                            <DatePicker className="w-full"  />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item label="微信号" colon={false} name="sex">
+                            <Input onChange={handleInputChange} className="w-full" />
                         </Form.Item>
                     </Col>
                 </Row>
