@@ -75,17 +75,23 @@ const LinksInfo: React.FC = () => {
       render: (url: string, record: DataType) => {
         if (record.isEditing) {
           return (
-            <Input
-              defaultValue={url}
-              autoFocus
-              onBlur={(e) => handleSave(record.key, e.target.value)}
-              onPressEnter={(e) =>
-                handleSave(record.key, e.currentTarget.value)
-              }
-            />
+                <Input
+                    defaultValue={url}
+                    autoFocus
+                    onBlur={(e) => handleSave(record.key, e.target.value)}
+                    onPressEnter={(e) =>
+                        handleSave(record.key, e.currentTarget.value)
+                    }
+                />
+
+
           );
         }
-        return <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>;
+        return(
+            <div className="">
+              <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>
+            </div>
+        );
       },
     },
     {
@@ -95,7 +101,7 @@ const LinksInfo: React.FC = () => {
       className: 'text-right', // 在antd的Table中添加类名
       render: (text: string, record: DataType) => {
         return (
-          <div className="flex justify-end space-x-2"> {/* 用Tailwind CSS的flex和space-x-2类来布局按钮 */}
+          <div className="flex justify-end space-x-2 "> {/* 用Tailwind CSS的flex和space-x-2类来布局按钮 */}
             {record.isEditing ? (
               <button
                 className="text-blue-600 hover:text-blue-700 mr-2"
@@ -138,9 +144,30 @@ const LinksInfo: React.FC = () => {
     } = useSortable({
       id: props['data-row-key'],
     });
+    // 添加样式修改拖拽样式风格
+    const style2 = {
+      color: '#000',
+      padding: '0.5rem',
+      borderRadius: '0.5rem',
+      border: '2px dashed blue',
+      margin: '0.5rem',
+      display: 'flex',
+      width: '100%',
+      height: '100%',
+      fontSize: '14px',
+      fontWeight: 'bold',
+      backgroundColor: '#fff',
+      justifyContent: 'space-between',
+      ...props.style,
+      transform: CSS.Transform.toString(transform ? { ...transform, scaleY: 1 } : undefined),
+      transition,
+      ...(isDragging ? { zIndex: 9999 } : {}),
+      ...(isDragging ? { position: 'relative' } : {}),
+
+    }
 
     const style: React.CSSProperties = {
-      ...props.style,
+      ...props.style.style={fontSize:'14px',border:'#165DFF'},
       transform: CSS.Transform.toString(transform ? { ...transform, scaleY: 1 } : undefined),
       transition,
       ...(isDragging ? { zIndex: 9999 } : {}),
@@ -148,21 +175,22 @@ const LinksInfo: React.FC = () => {
     };
 
     return (
-      <tr {...props} ref={setNodeRef} style={style} {...attributes}>
-        {React.Children.map(children, (child) => {
-          if (React.isValidElement(child) && child.key === 'sort') {
-            return React.cloneElement(child, {
-              children: (
-                <MenuOutlined
-                  ref={setActivatorNodeRef}
-                  style={{ cursor: 'grab' }}
-                  {...listeners}
-                />
-              ),
-            });
-          }
-          return child;
-        })}
+      <tr  {...props} ref={setNodeRef} style={style2} {...attributes}>
+          {React.Children.map(children, (child) => {
+            if (React.isValidElement(child) && child.key === 'sort') {
+              return React.cloneElement(child, {
+                children: (
+                    <MenuOutlined
+                        ref={setActivatorNodeRef}
+                        style={{ cursor: 'grab' }}
+                        {...listeners}
+                    />
+                ),
+              });
+            }
+            return child;
+          })}
+
       </tr>
     );
   };
@@ -196,7 +224,7 @@ const LinksInfo: React.FC = () => {
     </DndContext>
     <Button
   type="primary"
-  className="mt-4 bg-black border-black" // 使用 Tailwind 的类替换内联样式
+  className="mt-4 bg-blue-500 border-blue-500 " // 使用 Tailwind 的类替换内联样式
   onClick={handleAdd}
 >
   <span className="inline-flex items-center"> {/* 使用 flex 布局来对齐图标和文本 */}
