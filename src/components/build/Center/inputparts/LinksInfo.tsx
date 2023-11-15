@@ -9,6 +9,7 @@ import type { ColumnsType } from 'antd/es/table';
 
 interface DataType {
   key: string;
+  name: string; // 新增
   url: string;
   isEditing?: boolean;
 }
@@ -17,19 +18,11 @@ const LinksInfo: React.FC = () => {
   const [dataSource, setDataSource] = useState<DataType[]>([
     {
       key: '1',
-      url: 'http://example.com/longtext...',
-      isEditing: false,
-    },
-    {
-      key: '2',
+      name: 'Github',
       url: 'http://example.com',
       isEditing: false,
     },
-    {
-      key: '3',
-      url: 'http://example.net',
-      isEditing: false,
-    },
+  
   ]);
 
   const handleEdit = (key: string) => {
@@ -40,10 +33,10 @@ const LinksInfo: React.FC = () => {
     );
   };
 
-  const handleSave = (key: string, newValue: string) => {
+  const handleSave = (key: string, newName: string, newUrl: string) => {
     setDataSource(
       dataSource.map((item) =>
-        item.key === key ? { ...item, url: newValue, isEditing: false } : item
+        item.key === key ? { ...item, name: newName, url: newUrl, isEditing: false } : item
       )
     );
   };
@@ -56,58 +49,67 @@ const LinksInfo: React.FC = () => {
     const newKey = (Math.max(...dataSource.map(d => Number(d.key))) + 1).toString(); // 创建一个新的、唯一的 key
     const newData = {
       key: newKey,
-      url: 'http://new.example.com',
-      isEditing: false,
+      name: ' ',
+      url: '',
+      isEditing: true,
     };
     setDataSource([...dataSource, newData]); // 添加新的数据到 dataSource
   };
 
   const columns: ColumnsType<DataType> = [
+    
     {
       key: 'sort',
       title: '自定义内容',
       // This column is for drag handle
     },
+    
     {
-
+      title: '',
+      dataIndex: 'name',
+      render: (name: string, record: DataType) => {
+        if (record.isEditing) {
+          return (
+            <Input
+              id={`name-edit-${record.key}`}
+              defaultValue={name}
+              autoFocus
+            />
+          );
+        }
+        return name;
+      },
+    },
+    {
+      title: '',
       dataIndex: 'url',
-
       render: (url: string, record: DataType) => {
         if (record.isEditing) {
           return (
-                <Input
-                    defaultValue={url}
-                    autoFocus
-                    onBlur={(e) => handleSave(record.key, e.target.value)}
-                    onPressEnter={(e) =>
-                        handleSave(record.key, e.currentTarget.value)
-                    }
-                />
-
-
+            <Input
+              id={`url-edit-${record.key}`}
+              defaultValue={url}
+            />
           );
         }
-        return(
-            <div className="">
-              <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>
-            </div>
-        );
+        return <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>;
       },
     },
     {
       key: 'action',
       title: '',
       dataIndex: 'operation',
-      className: 'text-right', // 在antd的Table中添加类名
+      className: 'text-right',
       render: (text: string, record: DataType) => {
         return (
-          <div className="flex justify-end space-x-2 "> {/* 用Tailwind CSS的flex和space-x-2类来布局按钮 */}
+          <div className="flex justify-end space-x-2 ">
             {record.isEditing ? (
               <button
                 className="text-blue-600 hover:text-blue-700 mr-2"
                 onClick={() => {
-                  const input = document.getElementById(`url-edit-${record.key}`) as HTMLInputElement | null;
-                  if (input) handleSave(record.key, input.value);
+                  const nameInput = document.getElementById(`name-edit-${record.key}`) as HTMLInputElement | null;
+                  const urlInput = document.getElementById(`url-edit-${record.key}`) as HTMLInputElement | null;
+                  if (nameInput && urlInput) handleSave(record.key, nameInput.value, urlInput.value);
                 }}
               >
                 <SaveOutlined />
@@ -152,7 +154,9 @@ const LinksInfo: React.FC = () => {
       border: '2px dashed blue',
       margin: '0.5rem',
       display: 'flex',
-      width: '100%',
+      minWidth: '480px', 
+      maxWidth: '480px', 
+      overflow: 'auto',
       height: '100%',
       fontSize: '14px',
       fontWeight: 'bold',
@@ -207,6 +211,7 @@ const LinksInfo: React.FC = () => {
 
   return (
     <>
+    <h1 className="text-left text-xl font-bold mb-4 pl-3">自定义内容</h1>
     <DndContext modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
       <SortableContext items={dataSource.map((item) => item.key)} strategy={verticalListSortingStrategy}>
         <Table
@@ -219,12 +224,14 @@ const LinksInfo: React.FC = () => {
           columns={columns}
           dataSource={dataSource}
           pagination={false}
+          showHeader={false} // 不显示标题行
+          
         />
       </SortableContext>
     </DndContext>
     <Button
   type="primary"
-  className="mt-4 bg-blue-500 border-blue-500 " // 使用 Tailwind 的类替换内联样式
+  className="mt-4 bg-blue-500 border-blue-500 ml-3 mb-10" // 使用 Tailwind 的类替换内联样式
   onClick={handleAdd}
 >
   <span className="inline-flex items-center"> {/* 使用 flex 布局来对齐图标和文本 */}

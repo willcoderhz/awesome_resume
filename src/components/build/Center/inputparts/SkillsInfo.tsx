@@ -19,13 +19,13 @@ interface DataType {
   editable?: boolean;
 }
 
-const ProjectsInfo: React.FC = () => {
+const SkillsInfo: React.FC = () => {
   const [form] = Form.useForm();
   const [dataSource, setDataSource] = useState<DataType[]>([
     {
       key: '1',
-      school: '简单简历',
-      major: '开源项目',
+      school: 'Javascript',
+      major: '',
       description: '',
       isEditing: false,
     },
@@ -106,7 +106,7 @@ const ProjectsInfo: React.FC = () => {
   const columns: ColumnsType<DataType> = [
     // This column is for drag handle
     {
-      title: '个人项目',
+      title: '专业技能',
       key: 'sort',
       render: () => <span className="drag-handle"><MenuOutlined /></span>,
       className: 'drag-visible',
@@ -254,7 +254,7 @@ const ProjectsInfo: React.FC = () => {
 
   return (
     <>
-    <h1 className="text-left text-xl font-bold mb-4 pl-3">个人项目</h1>
+    <h1 className="text-left text-xl font-bold mb-4 pl-3">专业技能</h1>
     <Form form={form} component={false}>
       <DndContext modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
         <SortableContext items={dataSource.map((item) => item.key)} strategy={verticalListSortingStrategy}>
@@ -334,7 +334,7 @@ const ProjectsInfo: React.FC = () => {
 >
   <span className="inline-flex items-center"> {/* 使用 flex 布局来对齐图标和文本 */}
     <PlusOutlined className="mr-2" /> {/* 可以调整这个 margin 来控制图标和文本之间的距离 */}
-    添加个人项目
+    添加技能
   </span>
 </Button>
     </Form>
@@ -342,4 +342,5 @@ const ProjectsInfo: React.FC = () => {
   );
 };
 
-export default ProjectsInfo;
+export default SkillsInfo;
+

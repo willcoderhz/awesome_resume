@@ -6,6 +6,7 @@ import EducationInfo from './inputparts/EducationInfo';
 import WorkingExperienceInfo from './inputparts/WorkingExperienceInfo';
 import ProjectsInfo from './inputparts/ProjectsInfo';
 import LinksInfo from './inputparts/LinksInfo';
+import SkillsInfo from './inputparts/SkillsInfo';
 
 const UserInfoFormView = ({
     handleInputChange,
@@ -44,17 +45,8 @@ const UserInfoFormView = ({
           handleDeleteLink={handleDeleteLink}
           addLink={addLink}
       />
-      <SelfIntroduction   handleInputChange={handleInputChange} />
-      <EducationInfo
+      
 
-      educations={educations}
-      handleDragStart={handleDragStart}
-      handleEducationDrop={handleEducationDrop}
-      handleDragOver={handleDragOver}
-      handleInputChange={handleInputChange}
-      handleDeleteEducation={handleDeleteEducation}
-      addEducation={addEducation}
-      />
       <WorkingExperienceInfo
 
           workExperiences={workExperiences}
@@ -65,6 +57,28 @@ const UserInfoFormView = ({
           handleDeleteWorkExperience={handleDeleteWorkExperience}
           addWorkExperience={addWorkExperience}
         />
+
+<SkillsInfo
+
+links={links}
+handleDragStart={handleDragStart}
+handleLinkDrop={handleLinkDrop}
+handleDragOver={handleDragOver}
+handleInputChange={handleInputChange}
+handleDeleteLink={handleDeleteLink}
+addLink={addLink}
+/>
+      <EducationInfo
+
+      educations={educations}
+      handleDragStart={handleDragStart}
+      handleEducationDrop={handleEducationDrop}
+      handleDragOver={handleDragOver}
+      handleInputChange={handleInputChange}
+      handleDeleteEducation={handleDeleteEducation}
+      addEducation={addEducation}
+      />
+      
 
         <ProjectsInfo
 
@@ -77,7 +91,7 @@ const UserInfoFormView = ({
           addProject={addProject}
         />
 
-
+<SelfIntroduction   handleInputChange={handleInputChange} />
       </div>
     </div>
     );

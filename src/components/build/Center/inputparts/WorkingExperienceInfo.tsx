@@ -6,13 +6,18 @@ import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import { DatePicker } from 'antd';
+import zh_CN from 'antd/es/date-picker/locale/zh_CN';
 
 interface DataType {
   key: string;
   school: string;
   major: string;
   description: string;
+  city: string; // 新增
+  workTime: string; // 新增
   editable?: boolean;
 }
 
@@ -92,6 +97,8 @@ const WorkingExperienceInfo: React.FC = () => {
       school: '',
       major: '',
       description: '',
+      city: '', // 新增
+      workTime: '', // 新增
       isEditing: true,
       expand: true, // 设置新行的 expand 属性为 true
     };
@@ -103,7 +110,7 @@ const WorkingExperienceInfo: React.FC = () => {
   const columns: ColumnsType<DataType> = [
     // This column is for drag handle
     {
-      title: 'Working Experience',
+      title: '工作经历',
       key: 'sort',
       render: () => <span className="drag-handle"><MenuOutlined /></span>,
       className: 'drag-visible',
@@ -186,6 +193,29 @@ const WorkingExperienceInfo: React.FC = () => {
       id: props['data-row-key'],
     });
 
+    const style2 = {
+      color: '#000',
+      padding: '0.5rem',
+      borderRadius: '0.5rem',
+      border: '2px dashed blue',
+      margin: '0.5rem',
+      display: 'flex',
+      minWidth: '480px', 
+      maxWidth: '480px', 
+      overflow: 'auto',
+      height: '100%',
+      fontSize: '14px',
+      fontWeight: 'bold',
+      backgroundColor: '#fff',
+      justifyContent: 'space-between',
+      ...props.style,
+      transform: CSS.Transform.toString(transform ? { ...transform, scaleY: 1 } : undefined),
+      transition,
+      ...(isDragging ? { zIndex: 9999 } : {}),
+      ...(isDragging ? { position: 'relative' } : {}),
+
+    }
+
     const style: React.CSSProperties = {
       transform: CSS.Transform.toString(transform),
       transition,
@@ -195,7 +225,7 @@ const WorkingExperienceInfo: React.FC = () => {
 
     return (
       
-      <tr {...props} ref={setNodeRef} style={style} {...attributes}>
+      <tr {...props} ref={setNodeRef} style={style2} {...attributes}>
         {React.Children.map(children, (child) => {
           if (React.isValidElement(child) && child.key === 'sort') {
             return React.cloneElement(child, {
@@ -226,6 +256,8 @@ const WorkingExperienceInfo: React.FC = () => {
   };
 
   return (
+    <>
+    <h1 className="text-left text-xl font-bold mb-4 pl-3">工作经历</h1>
     <Form form={form} component={false}>
       <DndContext modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
         <SortableContext items={dataSource.map((item) => item.key)} strategy={verticalListSortingStrategy}>
@@ -240,6 +272,7 @@ const WorkingExperienceInfo: React.FC = () => {
               columns={columns}
               dataSource={dataSource}
               pagination={false}
+              showHeader={false} // 不显示标题行
               expandable={{
                 expandedRowKeys: expandedRowKeys,
                 onExpand: onExpand,
@@ -249,41 +282,63 @@ const WorkingExperienceInfo: React.FC = () => {
                 },
                 expandedRowRender: record => record.expand && (
                   <Form
-                    layout="vertical"
-                    form={form}
-                    className="expanded-row"
-                    initialValues={{
-                      school: record.school,
-                      major: record.major,
-                      description: record.description,
-                    }}
-                  >
-                    <Form.Item name="school" label="School">
-                      <Input />
-                    </Form.Item>
-                    <Form.Item name="major" label="Major">
-                      <Input />
-                    </Form.Item>
-                    <Form.Item name="description" label="Description">
-                      <Input.TextArea rows={2} />
-                    </Form.Item>
-                    <Form.Item>
-                      <Button
-                        type="primary"
-                        onClick={async () => {
-                          try {
-                            const values = await form.validateFields();
-                            await save(record.key, values); // 确保传递 record.key 和 values 给 save 函数
-                          } catch (errInfo) {
-                            console.log('Validate Failed:', errInfo);
-                          }
-                        }}
-                        className="ant-btn bg-gray-500 text-white"
-                      >
-                        Save
-                      </Button>
-                    </Form.Item>
-                  </Form>
+    layout="vertical"
+    form={form}
+    className="expanded-row"
+    initialValues={{
+      school: record.school,
+      major: record.major,
+      description: record.description,
+      city: record.city, // 新增
+      workTime: record.workTime, // 新增
+    }}
+  >
+    <div className="flex flex-wrap -mx-3">
+  <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+    <Form.Item name="school" label="公司名称">
+      <Input className="w-full" />
+    </Form.Item>
+  </div>
+  <div className="w-full md:w-1/2 px-3">
+    <Form.Item name="major" label="工作岗位">
+      <Input className="w-full" />
+    </Form.Item>
+  </div>
+</div>
+
+<div className="flex flex-wrap -mx-3">
+  <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+    <Form.Item name="city" label="所在城市">
+      <Input className="w-full" />
+    </Form.Item>
+  </div>
+  <div className="w-full md:w-1/2 px-3">
+  <Form.Item name="workTime" label="开始&结束时间">
+  <DatePicker.RangePicker className="w-full" locale={zh_CN} />
+</Form.Item>
+  </div>
+</div>
+
+<Form.Item name="description" label="Description">
+  <ReactQuill theme="snow" className="h-32" />
+</Form.Item>
+    <Form.Item>
+      <Button
+        type="primary"
+        onClick={async () => {
+          try {
+            const values = await form.validateFields();
+            await save(record.key, values); // 确保传递 record.key 和 values 给 save 函数
+          } catch (errInfo) {
+            console.log('Validate Failed:', errInfo);
+          }
+        }}
+        className="ant-btn bg-gray-500 text-white mt-10"
+      >
+        Save
+      </Button>
+    </Form.Item>
+  </Form>
                 ),
              
             }}
@@ -291,15 +346,17 @@ const WorkingExperienceInfo: React.FC = () => {
         </SortableContext>
       </DndContext>
       <Button
-        onClick={handleAdd}
-        type="primary"
-        style={{ marginTop: 16 }}
-        disabled={editingKey !== ''}
-        className="ant-btn bg-gray-500 text-white mb-8"
-      >
-        <PlusOutlined /> Add a row
-      </Button>
+  type="primary"
+  className="mt-4 bg-blue-500 border-blue-500 ml-3 mb-10" // 使用 Tailwind 的类替换内联样式
+  onClick={handleAdd}
+>
+  <span className="inline-flex items-center"> {/* 使用 flex 布局来对齐图标和文本 */}
+    <PlusOutlined className="mr-2" /> {/* 可以调整这个 margin 来控制图标和文本之间的距离 */}
+    添加工作经历
+  </span>
+</Button>
     </Form>
+    </>
   );
 };
 
