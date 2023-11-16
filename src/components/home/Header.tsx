@@ -30,7 +30,7 @@ const Header = () => (
                             </button>
                         </a>
                     </div>
-                    <a href="#"
+                    <a href="/resumeTemplates"
                        className="mr-5 mt-4 rounded px-3 py-1 text-base hover:bg-sky-100 hover:text-gray-900 focus:outline-none md:mt-0">简历模版</a>
                     <a href="/#"
                        className="mr-5 mt-4 rounded px-3 py-1 text-base hover:bg-gray-200 hover:bg-sky-100 focus:outline-none md:mt-0">立即加入</a>

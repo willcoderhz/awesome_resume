@@ -61,4 +61,3 @@ const ResumeModel_A = ({ userInfo }) => {
 
 export default ResumeModel_A;
 
-

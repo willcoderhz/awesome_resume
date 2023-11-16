@@ -4,7 +4,7 @@ const ResumeModel_B = ({ userInfo }) => {
     return (
         <div className="fixed top-0 right-0 h-full w-45 bg-blue-50 p-8 overflow-y-auto shadow-md border-l-2 border-blue-200">
             <h1 className="text-4xl font-semibold mb-4 text-blue-800 underline">{userInfo.name}</h1>
-        
+
             <div className="mb-8 flex flex-wrap space-x-2 text-blue-600">
                 <p><i className="fas fa-phone-alt"></i> {userInfo.phone}</p>
                 <p><i className="fas fa-envelope"></i> {userInfo.email}</p>
@@ -12,7 +12,7 @@ const ResumeModel_B = ({ userInfo }) => {
                 <p><i className="fas fa-map-marker-alt"></i> {userInfo.city}</p>
                 <p><i className="fas fa-birthday-cake"></i> {userInfo.age}</p>
             </div>
-        
+
             <section className="mb-8">
                 <h2 className="text-2xl font-bold text-blue-700 mb-2 border-b border-blue-300">自我介绍</h2>
                 <p className="text-blue-600">{userInfo.introduction}</p>
@@ -63,3 +63,4 @@ const ResumeModel_B = ({ userInfo }) => {
 };
 
 export default ResumeModel_B;
+
