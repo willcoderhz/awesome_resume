@@ -6,7 +6,7 @@ export const IndexPage = () => {
     return (
         <div>
             <main>
-                <div className={styles.title}>简历模板</div>
+                <div className="text-3xl mb-4 font-bold text-center text-gray-800 ">简历模板</div>
                 <div className={styles.templates}>
                     {templates.map((it, i) => {
                         return (
