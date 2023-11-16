@@ -5,16 +5,15 @@ import { Header } from './header'
 import styles from './index.module.scss'
 import { OwnerProjects } from './ownerProjects'
 import { WorkingHistory } from './workingHistory'
-import {ResumeModel_C} from "..";
+import {ResumeModel_D} from "..";
 import EditorHeader from "../../../components/build/Top/EditorHeader.tsx";
 import Navbar from "../../../components/build/LeftSidebar/Navbar.tsx";
 import UserInfoForm from "../../../components/build/Center/UserInfoForm.tsx";
-import {renderIntoDocument} from "react-dom/test-utils";
 
 const View: FC = () => {
     const [userInfo, setUserInfo] = useState({});
-    const rm = new ResumeModel_C
-    console.log("这是第一套：",rm)
+    const rm = new ResumeModel_D
+    console.log("这是哪套：",rm)
   const config = rm.defaultConfig
   const data = rm.defaultData
 
