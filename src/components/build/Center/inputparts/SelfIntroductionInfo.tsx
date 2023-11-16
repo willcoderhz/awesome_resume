@@ -9,7 +9,7 @@ type SelfIntroductionProps = {
 
 const SelfIntroduction: React.FC<SelfIntroductionProps> = ({ handleInputChange }) => {
     return (
-        <div id="selfIntroduction" className="bg-gray-50 p-4 ml-0 w-full">
+        <div id="selfIntroduction" className="bg-gray-50 p-2 ml-0 w-full">
             <Typography.Title level={3} className="mb-4 ml-1">自我介绍</Typography.Title>
 
             <ReactQuill 
