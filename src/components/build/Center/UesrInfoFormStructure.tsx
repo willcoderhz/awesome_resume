@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 
 import BasicInfo from './inputparts/BasicInfo';
 import SelfIntroduction from './inputparts/SelfIntroductionInfo';
@@ -10,6 +11,8 @@ import SkillsInfo from './inputparts/SkillsInfo';
 import ToggleButton from './ToggleButton';
 import Certification from './inputparts/Certification';
 import Language from './inputparts/Language';
+
+let nextId = 0;
 
 const UserInfoFormView = ({
     handleInputChange,
@@ -33,73 +36,83 @@ const UserInfoFormView = ({
     addLink
 }) => {
   const [components, setComponents] = useState([]);
+  const [certifications, setCertifications] = useState<string[]>([]);
+  const [languages, setLanguages] = useState<string[]>([]);
+
+  useEffect(() => {
+    return () => {
+      nextId = 0; // reset the id counter when the component unmounts
+    };
+  }, []);
 
   const addSelfIntroduction = () => {
-    const key = components.length;
-    const newComponent = <SelfIntroduction key={key} handleInputChange={handleInputChange} handleDelete={() => deleteComponent(key)} />;
-    setComponents([...components, newComponent]);
+    const key = nextId++;
+    const newComponent = <SelfIntroduction id={key} key={key} handleInputChange={handleInputChange} handleDelete={() => deleteComponent(key)} />;
+    setComponents(prevComponents => [...prevComponents, newComponent]);
   };
-
+  
   const addCertification = () => {
-    const key = components.length;
-    const newComponent = <Certification key={key} handleInputChange={handleInputChange} handleDelete={() => deleteComponent(key)}/>;
-    setComponents([...components, newComponent]);
+    const key = nextId++;
+    const newComponent = <Certification id={key} key={key} handleInputChange={handleCertificationChange} handleDelete={() => deleteComponent(key)}/>;
+    setComponents(prevComponents => [...prevComponents, newComponent]);
   };
-
+  
   const addLanguage = () => {
-    const key = components.length;
-    const newComponent = <Language key={key} handleInputChange={handleInputChange} handleDelete={() => deleteComponent(key)}/>;
-    setComponents([...components, newComponent]);
+    const key = nextId++;
+    const newComponent = <Language id={key} key={key} handleInputChange={handleLanguageChange} handleDelete={() => deleteComponent(key)}/>;
+    setComponents(prevComponents => [...prevComponents, newComponent]);
   };
-
-  const deleteComponent = (key: number) => {
-    setComponents(components.filter((_, index) => index !== key));
+  
+  const deleteComponent = (id: number) => {
+    setComponents(prevComponents => prevComponents.filter(component => component.props.id !== id));
   };
 
   const handleCertificationChange = (newCertifications: string[]) => {
     setCertifications(newCertifications);
   };
-    return (
+
+  const handleLanguageChange = (newLanguages: string[]) => {
+    setLanguages(newLanguages);
+  };
+
+      return (
       <div className="ml-0 z-10 w-45">
       <div className="userInfoInput">
 
       <BasicInfo handleInputChange={handleInputChange} />
 
       <LinksInfo
-
-          links={links}
-          handleDragStart={handleDragStart}
-          handleLinkDrop={handleLinkDrop}
-          handleDragOver={handleDragOver}
-          handleInputChange={handleInputChange}
-          handleDeleteLink={handleDeleteLink}
-          addLink={addLink}
+      links={links}
+      handleDragStart={handleDragStart}
+      handleLinkDrop={handleLinkDrop}
+      handleDragOver={handleDragOver}
+      handleInputChange={handleInputChange}
+      handleDeleteLink={handleDeleteLink}
+      addLink={addLink}
       />
       
 
       <WorkingExperienceInfo
+      workExperiences={workExperiences}
+      handleDragStart={handleDragStart}
+      handleWorkDrop={handleWorkDrop}
+      handleDragOver={handleDragOver}
+      handleInputChange={handleInputChange}
+      handleDeleteWorkExperience={handleDeleteWorkExperience}
+      addWorkExperience={addWorkExperience}
+      />
 
-          workExperiences={workExperiences}
-          handleDragStart={handleDragStart}
-          handleWorkDrop={handleWorkDrop}
-          handleDragOver={handleDragOver}
-          handleInputChange={handleInputChange}
-          handleDeleteWorkExperience={handleDeleteWorkExperience}
-          addWorkExperience={addWorkExperience}
-        />
+      <SkillsInfo
+      links={links}
+      handleDragStart={handleDragStart}
+      handleLinkDrop={handleLinkDrop}
+      handleDragOver={handleDragOver}
+      handleInputChange={handleInputChange}
+      handleDeleteLink={handleDeleteLink}
+      addLink={addLink}
+      />
 
-<SkillsInfo
-
-links={links}
-handleDragStart={handleDragStart}
-handleLinkDrop={handleLinkDrop}
-handleDragOver={handleDragOver}
-handleInputChange={handleInputChange}
-handleDeleteLink={handleDeleteLink}
-addLink={addLink}
-/>
       <EducationInfo
-
       educations={educations}
       handleDragStart={handleDragStart}
       handleEducationDrop={handleEducationDrop}
@@ -109,29 +122,24 @@ addLink={addLink}
       addEducation={addEducation}
       />
       
+      <ProjectsInfo
+      projects={projects}
+      handleDragStart={handleDragStart}
+      handleProjectDrop={handleProjectDrop}
+      handleDragOver={handleDragOver}
+      handleInputChange={handleInputChange}
+      handleDeleteProject={handleDeleteProject}
+      addProject={addProject}
+      />
 
-        <ProjectsInfo
+      <br />
 
-          projects={projects}
-          handleDragStart={handleDragStart}
-          handleProjectDrop={handleProjectDrop}
-          handleDragOver={handleDragOver}
-          handleInputChange={handleInputChange}
-          handleDeleteProject={handleDeleteProject}
-          addProject={addProject}
-        />
-
-<br />
-
-
-    {components.map((component, index) => (
-        React.cloneElement(component, { key: index })
-      ))}
+      {components}
 
       <ToggleButton
-        addSelfIntroduction={addSelfIntroduction}
-        addCertification={addCertification}
-        addLanguage={addLanguage}
+      addSelfIntroduction={addSelfIntroduction}
+      addCertification={addCertification}
+      addLanguage={addLanguage}
       />
       
         
