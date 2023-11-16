@@ -1,7 +1,7 @@
 import { createForm, Form, FormPath, onFieldInputValueChange } from '@formily/core'
 import { toJS } from 'mobx'
 import { ElementType, ReactNode } from 'react'
-import {BaseTemplate} from "../../template.tsx";
+import {BaseTemplate} from "./template.tsx";
 
 export abstract class FormilyTemplate<D, C> extends BaseTemplate<D, C> {
     constructor() {

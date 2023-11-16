@@ -1,16 +1,16 @@
 import clsx from 'clsx'
 import { useObserver } from 'mobx-react-lite'
 import React, { FC } from 'react'
-import { useTemplate } from '../../index.tsx'
-import { ResumeModel_C } from '../../Cmode/resumeModel_C.tsx'
 import { Header } from './header'
 import styles from './index.module.scss'
 import { OwnerProjects } from './ownerProjects'
 import { WorkingHistory } from './workingHistory'
+import {ResumeModel_C} from "..";
+import {useTemplate} from "../../template";
 
 const View: FC = () => {
   const store = useTemplate<ResumeModel_C>()
-    alert(store)
+    console.log(store)
   const config = store.config
   const data = store.data
 

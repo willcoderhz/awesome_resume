@@ -1,4 +1,4 @@
-import {ResumeModel_C} from '../templates/Cmode/resumeModel_C.tsx';
+import {ResumeModel_C} from '../templates/Cmode/';
 import { BaseTemplate } from './template'
 
 export { TemplateProvider, useTemplate } from './template'

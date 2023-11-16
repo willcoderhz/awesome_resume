@@ -1,7 +1,7 @@
 import { makeObservable, observable, toJS } from 'mobx'
 import React, { ElementType, FC, ReactNode } from 'react'
 
-const TemplateContext = React.createContext<BaseTemplate>(undefined as never)
+const TemplateContext = React.createContext<BaseTemplate>(undefined as any)
 
 //这段代码定义了一个名为useTemplate的React Hook，
 // 它用于从React上下文中获取数据。该函数使用React.useContext方法获取上下文对象，并将其类型断言为T类型
@@ -57,7 +57,7 @@ export abstract class BaseTemplate<D = unknown, C = unknown> {
 
     abstract provider: ElementType<{ children: ReactNode }>
 
-    config: C = undefined as never
+    config: C = undefined as any
 
-    data: D = undefined as never
+    data: D = undefined as any
 }
