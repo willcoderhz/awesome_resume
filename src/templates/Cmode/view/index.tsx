@@ -1,18 +1,22 @@
 import clsx from 'clsx'
 import { useObserver } from 'mobx-react-lite'
-import React, { FC } from 'react'
+import React, {FC, useState} from 'react'
 import { Header } from './header'
 import styles from './index.module.scss'
 import { OwnerProjects } from './ownerProjects'
 import { WorkingHistory } from './workingHistory'
 import {ResumeModel_C} from "..";
-import {useTemplate} from "../../template";
+import EditorHeader from "../../../components/build/Top/EditorHeader.tsx";
+import Navbar from "../../../components/build/LeftSidebar/Navbar.tsx";
+import UserInfoForm from "../../../components/build/Center/UserInfoForm.tsx";
+import {renderIntoDocument} from "react-dom/test-utils";
 
 const View: FC = () => {
-  const store = useTemplate<ResumeModel_C>()
-    console.log(store)
-  const config = store.config
-  const data = store.data
+    const [userInfo, setUserInfo] = useState({});
+    const rm = new ResumeModel_C
+    console.log(rm)
+  const config = rm.defaultConfig
+  const data = rm.defaultData
 
   const renderContent = useObserver(() => {
     const modules = {
@@ -42,7 +46,7 @@ const View: FC = () => {
         return (
           <div key={it.key}>
             <div className={styles.title}>
-              {React.createElement(store.titleComponent, {
+              {React.createElement(rm.titleComponent, {
                 value: it.name,
               })}
             </div>
@@ -53,19 +57,30 @@ const View: FC = () => {
   })
 
   return useObserver(() => (
-    <div
-      className={styles.index}
-      style={
-        {
-          '--color-primary': config.primaryColor,
-        } as any
-      }
-    >
-      <div className={styles.header}>
-        <Header />
-      </div>
 
-      {renderContent}
+
+//todo  这个地方的写法多少感觉有些问题，模版里应该只写模板的问题，但我把外层导航和编辑部分也加进来了，感觉有点乱，后面要在修改下
+
+    <div>
+        <EditorHeader />
+        <div className="flex">
+            <Navbar />
+            <UserInfoForm onInfoChange={setUserInfo} />
+            <div
+                className={styles.index}
+                style={
+                    {
+                        '--color-primary': config.primaryColor,
+                    } as any
+                }
+            >
+                <div className={styles.header}>
+                    <Header />
+                </div>
+
+                {renderContent}
+            </div>
+        </div>
     </div>
   ))
 }

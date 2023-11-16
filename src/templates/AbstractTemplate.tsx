@@ -3,7 +3,7 @@ import { toJS } from 'mobx'
 import { ElementType, ReactNode } from 'react'
 import {BaseTemplate} from "./template.tsx";
 
-export abstract class FormilyTemplate<D, C> extends BaseTemplate<D, C> {
+export abstract class AbstractTemplate<D, C> extends BaseTemplate<D, C> {
     constructor() {
         super()
         this.form = createForm({

@@ -1,14 +1,14 @@
 import { useObserver } from 'mobx-react-lite'
-import { useTemplate } from '../../../index.tsx'
-import { ResumeModel_C } from '../../resumeModel_C.tsx'
 import styles from './index.module.scss'
+import {ResumeModel_C} from "../../index.tsx";
 
 export const OwnerProjects = () => {
-  const { data, config } = useTemplate<ResumeModel_C>()
-
+  // const { data, config } = useTemplate<ResumeModel_C>()
+  const data = new ResumeModel_C
+  const config = data.defaultConfig
   return useObserver(() => (
     <div className={styles.index}>
-      {data.projects.map((it, i) => {
+      {data.defaultData.projects.map((it, i) => {
         return (
           <div key={i} className={styles.item}>
             <div className={styles.header}>
@@ -27,7 +27,7 @@ export const OwnerProjects = () => {
               textDecoration: 'underline',
             }}
           >
-            {data.github}
+            {data.defaultData.github}
           </span>
         </div>
       )}
