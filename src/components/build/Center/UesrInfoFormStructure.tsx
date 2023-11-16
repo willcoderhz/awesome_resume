@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 
 import BasicInfo from './inputparts/BasicInfo';
-import SelfIntroduction from './inputparts/SelfIntroductionInfo';
+import SelfIntroduction from './inputparts/customized/SelfIntroductionInfo';
 import EducationInfo from './inputparts/EducationInfo';
 import WorkingExperienceInfo from './inputparts/WorkingExperienceInfo';
 import ProjectsInfo from './inputparts/ProjectsInfo';
 import LinksInfo from './inputparts/LinksInfo';
 import SkillsInfo from './inputparts/SkillsInfo';
 import ToggleButton from './ToggleButton';
-import Certification from './inputparts/Certification';
-import Language from './inputparts/Language';
+import Certification from './inputparts/customized/Certification';
+import Language from './inputparts/customized/Language';
+import Hobby from './inputparts/customized/Hobby';
 
 let nextId = 0;
 
@@ -38,6 +39,7 @@ const UserInfoFormView = ({
   const [components, setComponents] = useState([]);
   const [certifications, setCertifications] = useState<string[]>([]);
   const [languages, setLanguages] = useState<string[]>([]);
+  const [hobbies, setHobbies] = useState<string[]>([]);
 
   useEffect(() => {
     return () => {
@@ -62,6 +64,12 @@ const UserInfoFormView = ({
     const newComponent = <Language id={key} key={key} handleInputChange={handleLanguageChange} handleDelete={() => deleteComponent(key)}/>;
     setComponents(prevComponents => [...prevComponents, newComponent]);
   };
+
+  const addHobby = () => {
+    const key = nextId++;
+    const newComponent = <Hobby id={key} key={key} handleInputChange={handleHobbyChange} handleDelete={() => deleteComponent(key)}/>;
+    setComponents(prevComponents => [...prevComponents, newComponent]);
+  }
   
   const deleteComponent = (id: number) => {
     setComponents(prevComponents => prevComponents.filter(component => component.props.id !== id));
@@ -73,6 +81,10 @@ const UserInfoFormView = ({
 
   const handleLanguageChange = (newLanguages: string[]) => {
     setLanguages(newLanguages);
+  };
+
+  const handleHobbyChange = (newHobbies: string[]) => {
+    setHobbies(newHobbies);
   };
 
       return (
@@ -140,6 +152,7 @@ const UserInfoFormView = ({
       addSelfIntroduction={addSelfIntroduction}
       addCertification={addCertification}
       addLanguage={addLanguage}
+      addHobby={addHobby}
       />
       
         
