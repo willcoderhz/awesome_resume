@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Input, Typography, Tag } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 
 type CertificationProps = {
   handleInputChange: (tags: string[]) => void;
+  handleDelete: () => void;
 };
 
-const Certification: React.FC<CertificationProps> = ({ handleInputChange }) => {
+const Certification: React.FC<CertificationProps> = ({ handleInputChange, handleDelete }) => {
   const [inputValue, setInputValue] = useState('');
   const [tags, setTags] = useState<string[]>(['CET-4', 'PMP证书']);
 
@@ -27,7 +29,13 @@ const Certification: React.FC<CertificationProps> = ({ handleInputChange }) => {
 
   return (
     <div id="certification" className="bg-gray-00 p-2 ml-0 w-full">
-      <Typography.Title level={3} className="mb-4 ml-1">证书</Typography.Title>
+      <div className="flex justify-between items-center mb-4">
+        <Typography.Title level={3} className="ml-1">证书</Typography.Title>
+        <div onClick={handleDelete} className="hover:text-red-500 cursor-pointer">
+          <DeleteOutlined />
+          <span>删除</span>
+        </div>
+      </div>
 
       {tags.map((tag, index) => {
         return (

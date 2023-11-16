@@ -32,23 +32,28 @@ const UserInfoFormView = ({
     handleLinkDrop,
     addLink
 }) => {
-  const [showSelfIntroduction, setShowSelfIntroduction] = useState(false);
-  const [showCertification, setShowCertification] = useState(false);
-  const [showLanguage, setShowLanguage] = useState(false);
+  const [components, setComponents] = useState([]);
 
-
-  const [certifications, setCertifications] = useState<string[]>([]);
-
-  const toggleSelfIntroduction = () => {
-    setShowSelfIntroduction(!showSelfIntroduction);
+  const addSelfIntroduction = () => {
+    const key = components.length;
+    const newComponent = <SelfIntroduction key={key} handleInputChange={handleInputChange} handleDelete={() => deleteComponent(key)} />;
+    setComponents([...components, newComponent]);
   };
 
-  const toggleCertification = () => {
-    setShowCertification(!showCertification);
+  const addCertification = () => {
+    const key = components.length;
+    const newComponent = <Certification key={key} handleInputChange={handleInputChange} handleDelete={() => deleteComponent(key)}/>;
+    setComponents([...components, newComponent]);
   };
 
-  const toggleLanguage = () => {
-    setShowLanguage(!showLanguage);
+  const addLanguage = () => {
+    const key = components.length;
+    const newComponent = <Language key={key} handleInputChange={handleInputChange} handleDelete={() => deleteComponent(key)}/>;
+    setComponents([...components, newComponent]);
+  };
+
+  const deleteComponent = (key: number) => {
+    setComponents(components.filter((_, index) => index !== key));
   };
 
   const handleCertificationChange = (newCertifications: string[]) => {
@@ -119,25 +124,15 @@ addLink={addLink}
 <br />
 
 
-{showSelfIntroduction && <SelfIntroduction handleInputChange={handleInputChange} />}
-<br />
-{showCertification && <Certification handleInputChange={handleCertificationChange} />}
-<br />
-{showLanguage && <Language handleInputChange={handleInputChange} />}
-<br />
-
-
-
-
+    {components.map((component, index) => (
+        React.cloneElement(component, { key: index })
+      ))}
 
       <ToggleButton
-          showSelfIntroduction={showSelfIntroduction}
-          toggleSelfIntroduction={toggleSelfIntroduction}
-          showCertification={showCertification}
-          toggleCertification={toggleCertification}
-          showLanguage={showLanguage}
-          toggleLanguage={toggleLanguage}
-        />
+        addSelfIntroduction={addSelfIntroduction}
+        addCertification={addCertification}
+        addLanguage={addLanguage}
+      />
       
         
       </div>
