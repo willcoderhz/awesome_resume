@@ -1,60 +1,18 @@
-import clsx from 'clsx'
 import { useObserver } from 'mobx-react-lite'
 import React, {FC, useState} from 'react'
 import { Header } from './header'
 import styles from './index.module.scss'
-import { OwnerProjects } from './ownerProjects'
-import { WorkingHistory } from './workingHistory'
 import {ResumeModel_D} from "..";
 import EditorHeader from "../../../components/build/Top/EditorHeader.tsx";
 import Navbar from "../../../components/build/LeftSidebar/Navbar.tsx";
 import UserInfoForm from "../../../components/build/Center/UserInfoForm.tsx";
+import { OwnerProjects } from '../view/ownerProjects/index.tsx'
 
 const View: FC = () => {
     const [userInfo, setUserInfo] = useState({});
     const rm = new ResumeModel_D
-    console.log("这是哪套：",rm)
-  const config = rm.defaultConfig
-  const data = rm.defaultData
-
-  const renderContent = useObserver(() => {
-    const modules = {
-      introduce: (
-        <div className={clsx(styles.content, styles.introduce)}>
-          {data.introduce.split('\n').map((it, i) => {
-            return <div key={i}>{it}</div>
-          })}
-        </div>
-      ),
-      ownerProjects: (
-        <div className={clsx(styles.content, styles.ownerProjects)}>
-          <OwnerProjects />
-        </div>
-      ),
-      workingHistory: (
-        <div className={clsx(styles.content)}>
-          <WorkingHistory />
-        </div>
-      ),
-      aboutMe: <div className={clsx(styles.content)}>{data.aboutMe}</div>,
-    }
-
-    return config.modules
-      .filter((it) => it.visible)
-      .map((it) => {
-        return (
-          <div key={it.key}>
-            <div className={styles.title}>
-              {React.createElement(rm.titleComponent, {
-                value: it.name,
-              })}
-            </div>
-            {modules[it.key]}
-          </div>
-        )
-      })
-  })
-
+    const config = rm.defaultConfig
+    
   return useObserver(() => (
 
 
@@ -65,8 +23,7 @@ const View: FC = () => {
         <div className="flex">
             <Navbar />
             <UserInfoForm onInfoChange={setUserInfo} />
-            <div
-                className={styles.index}
+            <div className={styles.index}
                 style={
                     {
                         '--color-primary': config.primaryColor,
@@ -76,8 +33,7 @@ const View: FC = () => {
                 <div className={styles.header}>
                     <Header />
                 </div>
-
-                {renderContent}
+                <OwnerProjects/>
             </div>
         </div>
     </div>

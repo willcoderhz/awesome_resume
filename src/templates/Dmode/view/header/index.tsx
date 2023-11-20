@@ -11,12 +11,17 @@ export const Header = () => {
         <div className={styles.name}>{data.name}</div>
         <div className={styles.des}>
           <span>
-            {[data.defaultData.age, data.defaultData.gender, data.defaultData.city, data.defaultData.target, data.defaultData.phoneNumber, data.defaultData.email].filter(Boolean).join(' ∕ ')}
+            {[data.defaultData.data.basicInfo.birth, data.defaultData.data.basicInfo.sex, data.defaultData.data.basicInfo.location, data.name, data.defaultData.data.basicInfo.cellphone, data.defaultData.data.basicInfo.email].filter(Boolean).join(' ∕ ')}
           </span>
           <br />
-          <span>{`${data.defaultData.education.graduationTime} 年毕业于 ${data.defaultData.education.schoolName} - ${data.defaultData.education.major}`}</span>
+          {/*<span>{`${data.defaultData.sections.graduationTime} 年毕业于 ${data.defaultData.education.schoolName} - ${data.defaultData.education.major}`}</span>*/}
         </div>
       </div>
     </div>
   ))
 }
+
+
+
+
+
