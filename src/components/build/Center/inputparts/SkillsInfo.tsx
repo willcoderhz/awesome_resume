@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Button, Table, Input, Form } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { MenuOutlined, PlusOutlined, EditOutlined, SaveOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -10,27 +10,38 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { DatePicker } from 'antd';
 import zh_CN from 'antd/es/date-picker/locale/zh_CN';
+import { useDispatch } from 'react-redux';
+import { addSkill, updateSkill, deleteSkill, reorderSkills} from '../../../../store/actions';
+import moment from 'moment';
 
 interface DataType {
   key: string;
-  school: string;
-  major: string;
+  skillName: string;
+  dateRange: string;
   description: string;
   editable?: boolean;
 }
 
 const SkillsInfo: React.FC = () => {
+  const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [dataSource, setDataSource] = useState<DataType[]>([
     {
       key: '1',
-      school: 'Javascript',
-      major: '',
+      skillName: 'Javascript',
+      dateRange: null,
       description: '',
       isEditing: false,
     },
     // More data can be added here
   ]);
+
+  useEffect(() => {
+    // Dispatch initial data to the store
+    dataSource.forEach(data => {
+      dispatch(addSkill(data));
+    });
+  }, []); // Empty dependency array means this effect runs once on mount
 
   const [editingKey, setEditingKey] = useState('');
 
@@ -79,6 +90,7 @@ const SkillsInfo: React.FC = () => {
       newData.splice(index, 1, { ...item, ...values, isEditing: false, expand: false }); // 直接修改对应行的 expand 属性
       setDataSource(newData);
       setEditingKey('');
+      dispatch(updateSkill({ ...item, ...values }));
     };
   };
   
@@ -86,14 +98,15 @@ const SkillsInfo: React.FC = () => {
 
   const handleDelete = (key: string) => {
     setDataSource(dataSource.filter(item => item.key !== key));
+    dispatch(deleteSkill(key));
   };
 
   const handleAdd = () => {
     const newKey = (Math.max(...dataSource.map(d => parseInt(d.key)), 0) + 1).toString();
     const newData = {
       key: newKey,
-      school: '',
-      major: '',
+      skillName: '',
+      dateRange: null,
       description: '',
       isEditing: true,
       expand: true, // 设置新行的 expand 属性为 true
@@ -101,6 +114,7 @@ const SkillsInfo: React.FC = () => {
     setDataSource([...dataSource, newData]);
     setEditingKey(newKey);
     setExpandedRowKeys(prevKeys => [...prevKeys, newKey]); // 将新行的 key 添加到 expandedRowKeys 中
+    dispatch(addSkill(newData));
   };
 
   const columns: ColumnsType<DataType> = [
@@ -114,7 +128,7 @@ const SkillsInfo: React.FC = () => {
     },
     {
       title: '',
-      dataIndex: 'school',
+      dataIndex: 'skillName',
       width: 300,
       editable: true,
       render: (text: string, record: DataType) => {
@@ -123,25 +137,7 @@ const SkillsInfo: React.FC = () => {
       }
       
     },
-    {
-      title: '',
-      dataIndex: 'major',
-      editable: false,
-      render: (text: string, record: DataType) => {
-    
-        return text;
-      }
-    },
-    {
-      title: '',
-      dataIndex: 'description',
-      editable: false,
-      render: (text: string, record: DataType) => {
-        // 现在这里不再创建任何编辑组件，直接返回文本
-        return text;
-      },
-    },
-    
+  
     {
       title: '',
       dataIndex: 'operation',
@@ -247,11 +243,15 @@ const SkillsInfo: React.FC = () => {
       setDataSource((previous) => {
         const activeIndex = previous.findIndex((item) => item.key === active.id);
         const overIndex = previous.findIndex((item) => item.key === over?.id);
-        return arrayMove(previous, activeIndex, overIndex);
+        const reordered = arrayMove(previous, activeIndex, overIndex);
+
+        // Dispatch the reorderSkills action
+        dispatch(reorderSkills(reordered));
+
+        return reordered;
       });
     }
   };
-
   return (
     <>
     <h1 className="text-left text-xl font-bold mb-4 pl-3">专业技能</h1>
@@ -283,20 +283,20 @@ const SkillsInfo: React.FC = () => {
                     form={form}
                     className="expanded-row"
                     initialValues={{
-                      school: record.school,
-                      major: record.major,
+                      skillName: record.skillName,
+                      dateRange: record.dateRange,
                       description: record.description,
                     }}
                   >
                     
 <div className="flex flex-wrap -mx-3">
   <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-    <Form.Item name="school" label="项目名称">
+    <Form.Item name="skillName" label="项目名称">
       <Input className="w-full" />
     </Form.Item>
   </div>
   <div className="w-full md:w-1/2 px-3">
-  <Form.Item name="workTime" label="开始&结束时间">
+  <Form.Item name="dateRange" label="开始&结束时间">
   <DatePicker.RangePicker className="w-full" locale={zh_CN} />
 </Form.Item>
   </div>

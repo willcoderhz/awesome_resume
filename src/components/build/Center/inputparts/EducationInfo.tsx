@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Button, Table, Input, Form } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { MenuOutlined, PlusOutlined, EditOutlined, SaveOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -10,29 +10,42 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { DatePicker } from 'antd';
 import zh_CN from 'antd/es/date-picker/locale/zh_CN';
+import { useDispatch } from 'react-redux';
+import { addEducation, updateEducation, deleteEducation, reorderEducations} from '../../../../store/actions';
+import moment from 'moment';
 
 interface DataType {
   key: string;
   school: string;
   major: string;
   description: string;
-  city: string; // 新增
-  workTime: string; // 新增
+  degree: string; // 新增
+  dateRange: string; // 新增
   editable?: boolean;
 }
 
 const EducationInfo: React.FC = () => {
+  const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [dataSource, setDataSource] = useState<DataType[]>([
     {
       key: '1',
-      school: 'Alibaba',
-      major: '前端工程师',
-      description: '',
+      school: '浙江大学',
+      major: '计算机科学与技术',
+      description: '全年级第一名，获得校级奖学金，获得校级优秀学生干部，获得校级优秀毕业生，获得校级优秀毕业设计，获得校级优秀毕业论文，获得校级优秀毕业生，获得校级优秀毕业设计，获得校级优秀毕业论文，获得校级优秀毕业生，获得校级优秀毕业设计，获得校级优秀毕业论文',
       isEditing: false,
+      dateRange: null,
+      degree: '本科',
     },
     // More data can be added here
   ]);
+
+  useEffect(() => {
+    // Dispatch initial data to the store
+    dataSource.forEach(data => {
+      dispatch(addEducation(data));
+    });
+  }, []);
 
   const [editingKey, setEditingKey] = useState('');
 
@@ -81,6 +94,7 @@ const EducationInfo: React.FC = () => {
       newData.splice(index, 1, { ...item, ...values, isEditing: false, expand: false }); // 直接修改对应行的 expand 属性
       setDataSource(newData);
       setEditingKey('');
+      dispatch(updateEducation({ ...item, ...values }));
     };
   };
   
@@ -88,6 +102,7 @@ const EducationInfo: React.FC = () => {
 
   const handleDelete = (key: string) => {
     setDataSource(dataSource.filter(item => item.key !== key));
+    dispatch(deleteEducation(key));
   };
 
   const handleAdd = () => {
@@ -97,14 +112,15 @@ const EducationInfo: React.FC = () => {
       school: '',
       major: '',
       description: '',
-      city: '', // 新增
-      workTime: '', // 新增
+      degree: '', // 新增
+      dateRange: null, // 新增
       isEditing: true,
       expand: true, // 设置新行的 expand 属性为 true
     };
     setDataSource([...dataSource, newData]);
     setEditingKey(newKey);
     setExpandedRowKeys(prevKeys => [...prevKeys, newKey]); // 将新行的 key 添加到 expandedRowKeys 中
+    dispatch(addEducation(newData));
   };
 
   const columns: ColumnsType<DataType> = [
@@ -135,15 +151,7 @@ const EducationInfo: React.FC = () => {
         return text;
       }
     },
-    {
-      title: '',
-      dataIndex: 'description',
-      editable: false,
-      render: (text: string, record: DataType) => {
-        // 现在这里不再创建任何编辑组件，直接返回文本
-        return text;
-      },
-    },
+    
     
     {
       title: '',
@@ -250,10 +258,18 @@ const EducationInfo: React.FC = () => {
       setDataSource((previous) => {
         const activeIndex = previous.findIndex((item) => item.key === active.id);
         const overIndex = previous.findIndex((item) => item.key === over?.id);
-        return arrayMove(previous, activeIndex, overIndex);
+        
+        // 计算新的排序后的数据
+        const newOrder = arrayMove(previous, activeIndex, overIndex);
+        
+        // 使用 dispatch 方法发送 reorderEducations action 更新 Redux store
+        dispatch(reorderEducations(newOrder));
+  
+        return newOrder;
       });
     }
   };
+  
 
   return (
     <>
@@ -289,8 +305,8 @@ const EducationInfo: React.FC = () => {
       school: record.school,
       major: record.major,
       description: record.description,
-      city: record.city, // 新增
-      workTime: record.workTime, // 新增
+      degree: record.degree, // 新增
+      dateRange: record.dateRange, // 新增
     }}
   >
     <div className="flex flex-wrap -mx-3">
@@ -308,12 +324,12 @@ const EducationInfo: React.FC = () => {
 
 <div className="flex flex-wrap -mx-3">
   <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-    <Form.Item name="city" label="所在城市">
+    <Form.Item name="degree" label="最高学历">
       <Input className="w-full" />
     </Form.Item>
   </div>
   <div className="w-full md:w-1/2 px-3">
-  <Form.Item name="workTime" label="开始&结束时间">
+  <Form.Item name="dateRange" label="开始&结束时间">
   <DatePicker.RangePicker className="w-full" locale={zh_CN} />
 </Form.Item>
   </div>

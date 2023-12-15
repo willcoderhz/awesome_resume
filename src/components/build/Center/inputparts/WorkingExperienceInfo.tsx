@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Button, Table, Input, Form } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { MenuOutlined, PlusOutlined, EditOutlined, SaveOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -10,29 +10,46 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { DatePicker } from 'antd';
 import zh_CN from 'antd/es/date-picker/locale/zh_CN';
+import { useDispatch } from 'react-redux';
+import { addWorkExperience, updateWorkExperience, deleteWorkExperience, reorderWorkExperience} from '../../../../store/actions';
+import moment from 'moment';
 
 interface DataType {
   key: string;
-  school: string;
-  major: string;
+  companyName: string;
+  jobTitle: string;
   description: string;
   city: string; // 新增
-  workTime: string; // 新增
+  dateRange: string; // 新增
   editable?: boolean;
+  id?: string;
 }
 
 const WorkingExperienceInfo: React.FC = () => {
+  const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [dataSource, setDataSource] = useState<DataType[]>([
     {
       key: '1',
-      school: 'Alibaba',
-      major: '前端工程师',
-      description: '',
+      companyName: 'Alibaba',
+      jobTitle: '前端工程师',
+      description: '每天996，但是我还是乐此不疲',
       isEditing: false,
+      city: '杭州', 
+      id: '1',
+      dateRange:null
     },
     // More data can be added here
+    
   ]);
+
+  useEffect(() => {
+    // Dispatch initial data to the store
+    dataSource.forEach(data => {
+      dispatch(addWorkExperience(data));
+    });
+  }, []); // Empty dependency array means this effect runs once on mount
+
 
   const [editingKey, setEditingKey] = useState('');
 
@@ -77,34 +94,53 @@ const WorkingExperienceInfo: React.FC = () => {
     const index = newData.findIndex((item) => key === item.key);
     
     if (index > -1) {
-      const item = newData[index];
-      newData.splice(index, 1, { ...item, ...values, isEditing: false, expand: false }); // 直接修改对应行的 expand 属性
-      setDataSource(newData);
-      setEditingKey('');
-    };
-  };
+        const { dateRange, ...restValues } = values;
+
+        // 更新数据源
+        newData.splice(index, 1, { 
+            ...newData[index], 
+            ...restValues, 
+            dateRange, // 直接使用 dateRange，无需转换
+            isEditing: false, 
+            expand: false 
+        });
+
+        setDataSource(newData);
+        setEditingKey('');
+
+        // 构建 payload 并分发 action
+        const payload = { ...restValues, dateRange, id: key };
+        console.log("Dispatching updateWorkExperience with payload:", payload);
+        dispatch(updateWorkExperience(payload));
+    }
+};
+
+
   
   
 
   const handleDelete = (key: string) => {
     setDataSource(dataSource.filter(item => item.key !== key));
+    dispatch(deleteWorkExperience(key));
   };
 
   const handleAdd = () => {
     const newKey = (Math.max(...dataSource.map(d => parseInt(d.key)), 0) + 1).toString();
     const newData = {
       key: newKey,
-      school: '',
-      major: '',
+      companyName: '',
+      jobTitle: '',
       description: '',
       city: '', // 新增
-      workTime: '', // 新增
+      dateRange: null,
       isEditing: true,
       expand: true, // 设置新行的 expand 属性为 true
+      id: newKey,
     };
     setDataSource([...dataSource, newData]);
     setEditingKey(newKey);
     setExpandedRowKeys(prevKeys => [...prevKeys, newKey]); // 将新行的 key 添加到 expandedRowKeys 中
+    dispatch(addWorkExperience(newData));
   };
 
   const columns: ColumnsType<DataType> = [
@@ -118,7 +154,7 @@ const WorkingExperienceInfo: React.FC = () => {
     },
     {
       title: '',
-      dataIndex: 'school',
+      dataIndex: 'companyName',
       editable: true,
       
       render: (text: string, record: DataType) => {
@@ -128,21 +164,12 @@ const WorkingExperienceInfo: React.FC = () => {
     },
     {
       title: '',
-      dataIndex: 'major',
+      dataIndex: 'jobTitle',
       editable: false,
       render: (text: string, record: DataType) => {
     
         return text;
       }
-    },
-    {
-      title: '',
-      dataIndex: 'description',
-      editable: false,
-      render: (text: string, record: DataType) => {
-        // 现在这里不再创建任何编辑组件，直接返回文本
-        return text;
-      },
     },
     
     {
@@ -246,11 +273,26 @@ const WorkingExperienceInfo: React.FC = () => {
   };
 
   const onDragEnd = ({ active, over }: DragEndEvent) => {
+    // 检查拖拽事件是否有效
     if (active.id !== over?.id) {
       setDataSource((previous) => {
         const activeIndex = previous.findIndex((item) => item.key === active.id);
         const overIndex = previous.findIndex((item) => item.key === over?.id);
-        return arrayMove(previous, activeIndex, overIndex);
+  
+        // 使用 arrayMove 更新数组顺序
+        const newOrder = arrayMove(previous, activeIndex, overIndex);
+  
+        // 更新每个工作经历的 key
+        const updatedOrder = newOrder.map((item, index) => ({
+          ...item,
+          key: (index + 1).toString(),
+          id: (index + 1).toString()
+        }));
+  
+        // 调度 reorderWorkExperience action 更新 Redux state
+        dispatch(reorderWorkExperience(updatedOrder));
+  
+        return updatedOrder;
       });
     }
   };
@@ -286,21 +328,21 @@ const WorkingExperienceInfo: React.FC = () => {
     form={form}
     className="expanded-row"
     initialValues={{
-      school: record.school,
-      major: record.major,
+      companyName: record.companyName,
+      jobTitle: record.jobTitle,
       description: record.description,
       city: record.city, // 新增
-      workTime: record.workTime, // 新增
+      dateRange: record.dateRange, // 新增
     }}
   >
     <div className="flex flex-wrap -mx-3">
   <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-    <Form.Item name="school" label="公司名称">
+    <Form.Item name="companyName" label="公司名称">
       <Input className="w-full" />
     </Form.Item>
   </div>
   <div className="w-full md:w-1/2 px-3">
-    <Form.Item name="major" label="工作岗位">
+    <Form.Item name="jobTitle" label="工作岗位">
       <Input className="w-full" />
     </Form.Item>
   </div>
@@ -313,7 +355,7 @@ const WorkingExperienceInfo: React.FC = () => {
     </Form.Item>
   </div>
   <div className="w-full md:w-1/2 px-3">
-  <Form.Item name="workTime" label="开始&结束时间">
+  <Form.Item name="dateRange" label="开始&结束时间">
   <DatePicker.RangePicker className="w-full" locale={zh_CN} />
 </Form.Item>
   </div>

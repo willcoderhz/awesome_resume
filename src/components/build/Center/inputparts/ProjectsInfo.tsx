@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Table, Input, Form } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { MenuOutlined, PlusOutlined, EditOutlined, SaveOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -10,27 +10,38 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { DatePicker } from 'antd';
 import zh_CN from 'antd/es/date-picker/locale/zh_CN';
+import { useDispatch } from 'react-redux';
+import { addPersonalProject,deletePersonalProject,updatePersonalProject,reorderPersonalProjects} from '../../../../store/actions';
+import moment from 'moment';
 
 interface DataType {
   key: string;
-  school: string;
-  major: string;
+  projectName: string;
+  dateRange: string;
   description: string;
   editable?: boolean;
 }
 
 const ProjectsInfo: React.FC = () => {
+  const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [dataSource, setDataSource] = useState<DataType[]>([
     {
       key: '1',
-      school: '简单简历',
-      major: '开源项目',
+      projectName: '简单简历',
+      dateRange:null,
       description: '',
       isEditing: false,
     },
     // More data can be added here
   ]);
+
+  useEffect(() => {
+  
+    dataSource.forEach(data => {
+      dispatch(addPersonalProject(data));
+    });
+  }, []);
 
   const [editingKey, setEditingKey] = useState('');
 
@@ -79,6 +90,7 @@ const ProjectsInfo: React.FC = () => {
       newData.splice(index, 1, { ...item, ...values, isEditing: false, expand: false }); // 直接修改对应行的 expand 属性
       setDataSource(newData);
       setEditingKey('');
+      dispatch({ type: 'UPDATE_PERSONAL_PROJECT', payload: { key, ...values } }); // Dispatch UPDATE action
     };
   };
   
@@ -86,14 +98,15 @@ const ProjectsInfo: React.FC = () => {
 
   const handleDelete = (key: string) => {
     setDataSource(dataSource.filter(item => item.key !== key));
+    dispatch({ type: 'DELETE_PERSONAL_PROJECT', payload: key }); 
   };
 
   const handleAdd = () => {
     const newKey = (Math.max(...dataSource.map(d => parseInt(d.key)), 0) + 1).toString();
     const newData = {
       key: newKey,
-      school: '',
-      major: '',
+      projectName: '',
+      dateRange: '',
       description: '',
       isEditing: true,
       expand: true, // 设置新行的 expand 属性为 true
@@ -101,7 +114,9 @@ const ProjectsInfo: React.FC = () => {
     setDataSource([...dataSource, newData]);
     setEditingKey(newKey);
     setExpandedRowKeys(prevKeys => [...prevKeys, newKey]); // 将新行的 key 添加到 expandedRowKeys 中
+    dispatch({ type: 'ADD_PERSONAL_PROJECT', payload: newData }); // Dispatch ADD action using newData
   };
+  
 
   const columns: ColumnsType<DataType> = [
     // This column is for drag handle
@@ -114,7 +129,7 @@ const ProjectsInfo: React.FC = () => {
     },
     {
       title: '',
-      dataIndex: 'school',
+      dataIndex: 'projectName',
       width: 300,
       editable: true,
       render: (text: string, record: DataType) => {
@@ -123,24 +138,7 @@ const ProjectsInfo: React.FC = () => {
       }
       
     },
-    {
-      title: '',
-      dataIndex: 'major',
-      editable: false,
-      render: (text: string, record: DataType) => {
-    
-        return text;
-      }
-    },
-    {
-      title: '',
-      dataIndex: 'description',
-      editable: false,
-      render: (text: string, record: DataType) => {
-        // 现在这里不再创建任何编辑组件，直接返回文本
-        return text;
-      },
-    },
+   
     
     {
       title: '',
@@ -247,10 +245,16 @@ const ProjectsInfo: React.FC = () => {
       setDataSource((previous) => {
         const activeIndex = previous.findIndex((item) => item.key === active.id);
         const overIndex = previous.findIndex((item) => item.key === over?.id);
-        return arrayMove(previous, activeIndex, overIndex);
+        const newOrder = arrayMove(previous, activeIndex, overIndex);
+  
+        // 这里添加 dispatch 调用
+        dispatch({ type: 'REORDER_PERSONAL_PROJECTS', payload: newOrder });
+  
+        return newOrder;
       });
     }
   };
+  
 
   return (
     <>
@@ -283,25 +287,25 @@ const ProjectsInfo: React.FC = () => {
                     form={form}
                     className="expanded-row"
                     initialValues={{
-                      school: record.school,
-                      major: record.major,
+                      projectName: record.projectName,
+                      dateRange: record.dateRange,
                       description: record.description,
                     }}
                   >
                     
 <div className="flex flex-wrap -mx-3">
   <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-    <Form.Item name="school" label="项目名称">
+    <Form.Item name="projectName" label="项目名称">
       <Input className="w-full" />
     </Form.Item>
   </div>
   <div className="w-full md:w-1/2 px-3">
-  <Form.Item name="workTime" label="开始&结束时间">
+  <Form.Item name="dateRange" label="开始&结束时间">
   <DatePicker.RangePicker className="w-full" locale={zh_CN} />
 </Form.Item>
   </div>
 </div>
-<Form.Item name="description" label="描述">
+<Form.Item name="description" label="详细描述">
   <ReactQuill theme="snow" className="h-32" />
 </Form.Item>
                     <Form.Item>

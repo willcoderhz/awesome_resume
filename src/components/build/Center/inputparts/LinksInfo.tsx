@@ -3,9 +3,11 @@ import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Table, Input } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { useDispatch } from 'react-redux';
+import { addLink, updateLink, deleteLink,reorderLinks } from '../../../../store/actions';
 
 interface DataType {
   key: string;
@@ -15,15 +17,28 @@ interface DataType {
 }
 
 const LinksInfo: React.FC = () => {
-  const [dataSource, setDataSource] = useState<DataType[]>([
+
+  const dispatch = useDispatch();
+
+  const initialData: DataType[] = [
     {
       key: '1',
       name: 'Github',
       url: 'http://example.com',
       isEditing: false,
     },
-  
-  ]);
+    // ...可以添加更多的初始数据...
+  ];
+
+  const [dataSource, setDataSource] = useState<DataType[]>(initialData);
+
+  // 使用 useEffect 分发初始数据到 Redux store
+  useEffect(() => {
+    // 仅在组件挂载时执行
+    initialData.forEach(link => {
+      dispatch(addLink(link));
+    });
+  }, [dispatch]);
 
   const handleEdit = (key: string) => {
     setDataSource(
@@ -39,22 +54,31 @@ const LinksInfo: React.FC = () => {
         item.key === key ? { ...item, name: newName, url: newUrl, isEditing: false } : item
       )
     );
+    dispatch(updateLink(key, { name: newName, url: newUrl }));
   };
 
   const handleDelete = (key: string) => {
     setDataSource(dataSource.filter(item => item.key !== key));
+    dispatch(deleteLink(key));
   };
 
   const handleAdd = () => {
     const newKey = (Math.max(...dataSource.map(d => Number(d.key))) + 1).toString(); // 创建一个新的、唯一的 key
-    const newData = {
+    const newLinkData = {
       key: newKey,
-      name: ' ',
+      name: '', // 留空或者设置为一个提示文本
       url: '',
       isEditing: true,
+      
     };
-    setDataSource([...dataSource, newData]); // 添加新的数据到 dataSource
+  
+    // 更新本地 state
+    setDataSource([...dataSource, newLinkData]);
+  
+    // 使用 addLink action 创建函数来 dispatch action
+    dispatch(addLink({ key: newKey, name: '', url: '' })); // 确保这里的值与 newLinkData 一致
   };
+  
 
   const columns: ColumnsType<DataType> = [
     
@@ -204,10 +228,16 @@ const LinksInfo: React.FC = () => {
       setDataSource((previous) => {
         const activeIndex = previous.findIndex((item) => item.key === active.id);
         const overIndex = previous.findIndex((item) => item.key === over?.id);
-        return arrayMove(previous, activeIndex, overIndex);
+        const newOrder = arrayMove(previous, activeIndex, overIndex);
+  
+        // 在这里使用 reorderLinks action
+        dispatch(reorderLinks(newOrder));
+        
+        return newOrder;
       });
     }
   };
+  
 
   return (
     <>
