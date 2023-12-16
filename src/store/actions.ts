@@ -3,6 +3,8 @@
 import { Link, WorkExperience, Skill, Education, PersonalProject } from './types';
 
 // Action 类型常量
+export const ADD_BASIC_INFO = 'ADD_BASIC_INFO';
+export const UPDATE_BASIC_INFO = 'UPDATE_BASIC_INFO';
 export const ADD_LINK = 'ADD_LINK';
 export const UPDATE_LINK = 'UPDATE_LINK';
 export const DELETE_LINK = 'DELETE_LINK';
@@ -23,6 +25,10 @@ export const ADD_PERSONAL_PROJECT = 'ADD_PERSONAL_PROJECT';
 export const UPDATE_PERSONAL_PROJECT = 'UPDATE_PERSONAL_PROJECT';
 export const DELETE_PERSONAL_PROJECT = 'DELETE_PERSONAL_PROJECT';
 export const REORDER_PERSONAL_PROJECTS = 'REORDER_PERSONAL_PROJECTS';
+
+// Basic Info
+export const addBasicInfo = (basicInfo) => ({type: ADD_BASIC_INFO,payload: basicInfo,});
+export const updateBasicInfo = (basicInfo) => ({type: UPDATE_BASIC_INFO,payload: basicInfo,});
 
 // Links
 export const addLink = (link: Link) => ({ type: ADD_LINK, payload: link });

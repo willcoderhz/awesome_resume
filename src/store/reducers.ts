@@ -1,6 +1,8 @@
 // reducers.ts
 
 import {
+  ADD_BASIC_INFO,
+  UPDATE_BASIC_INFO,
   ADD_LINK,
   UPDATE_LINK,
   DELETE_LINK,
@@ -38,12 +40,33 @@ import { combineReducers } from 'redux';
 
 // 初始状态
 const initialState: ResumeState = {
+  basicInfo: [],
   links: [],
   workExperiences: [],
   skills: [],
   educations: [],
   personalProjects: []
 };
+
+function basicInfoReducer(state = {}, action) {
+  console.log('BasicInfo Reducer Action:', action);
+
+  switch (action.type) {
+    case ADD_BASIC_INFO:
+      const newStateAdd = { ...state, ...action.payload };
+      console.log('New State after ADD_BASIC_INFO:', newStateAdd);
+      return newStateAdd;
+
+    case UPDATE_BASIC_INFO:
+      const newStateUpdate = { ...state, ...action.payload };
+      console.log('New State after UPDATE_BASIC_INFO:', newStateUpdate);
+      return newStateUpdate;
+
+    default:
+      console.log('No action matched in basicInfoReducer, returning current state');
+      return state;
+  }
+}
 
 
 function linksReducer(state = initialState.links, action): Link[] {
@@ -222,6 +245,7 @@ function personalProjectsReducer(state = initialState.personalProjects, action):
 
 // 组合 reducers
 const rootReducer = combineReducers({
+  basicInfo: basicInfoReducer,
   links: linksReducer,
   workExperiences: workExperiencesReducer,
   skills: skillsReducer,

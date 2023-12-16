@@ -1,11 +1,12 @@
 import React from 'react';
 import { Typography, Divider, Row, Col, Tag } from 'antd';
-import { PhoneOutlined, MailOutlined, UserOutlined, EnvironmentOutlined, GiftFilled } from '@ant-design/icons';
+import { PhoneOutlined, MailOutlined, UserOutlined, EnvironmentOutlined, CalendarOutlined, WechatOutlined, IdcardOutlined, PictureOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 
 const { Title, Paragraph, Text } = Typography;
 
 const ResumeModel_A = ({ userInfo }) => {
+    const basicInfo=useSelector(state=>state.basicInfo);
     const workExperiences = useSelector(state => state.workExperiences);
     const links = useSelector(state => state.links);
     const skills=useSelector(state=>state.skills);
@@ -17,11 +18,14 @@ const ResumeModel_A = ({ userInfo }) => {
             <Title level={1} className="text-gray-800 mb-5">{userInfo.name}</Title>
 
             <Row gutter={16} className="mb-8">
-            <Col><Tag icon={<PhoneOutlined />} color="black">{userInfo.phone}</Tag></Col>
-            <Col><Tag icon={<MailOutlined />} color="black">{userInfo.email}</Tag></Col>
-            <Col><Tag icon={<UserOutlined />} color="black">{userInfo.sex}</Tag></Col>
-            <Col><Tag icon={<EnvironmentOutlined />} color="black">{userInfo.city}</Tag></Col>
-            <Col><Tag icon={<GiftFilled />} color="black">{userInfo.age}</Tag></Col>
+                <Col><Tag icon={<IdcardOutlined />} color="black">{basicInfo.position}</Tag></Col>
+                <Col><Tag icon={<PhoneOutlined />} color="black">{basicInfo.phone}</Tag></Col>
+                <Col><Tag icon={<CalendarOutlined />} color="black">{basicInfo.age}</Tag></Col>
+                <Col><Tag icon={<EnvironmentOutlined />} color="black">{basicInfo.city}</Tag></Col>
+                <Col><Tag icon={<MailOutlined />} color="black">{basicInfo.email}</Tag></Col>
+                <Col><Tag icon={<WechatOutlined />} color="black">{basicInfo.wechat}</Tag></Col>
+                <Col><Tag icon={<UserOutlined />} color="black">{basicInfo.name}</Tag></Col>
+                <Col>{basicInfo.photo && <img src={basicInfo.photo} alt="Profile" style={{ width: '50px', height: '50px' }} />}</Col>
             </Row>
 
             <Title level={3} className="text-gray-800 mb-3">自我介绍</Title>

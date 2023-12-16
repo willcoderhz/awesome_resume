@@ -1,19 +1,63 @@
-import React from 'react';
+import React, { useState, useEffect} from 'react';
 import { Input, Typography, DatePicker, Form, Col, Row } from 'antd';
 import { Upload, Button } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { DeleteOutlined } from '@ant-design/icons';
+import { useDispatch } from 'react-redux';
+import { addBasicInfo, updateBasicInfo } from '../../../../store/actions';
 
-type BasicInfoProps = {
-    handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    handleDateChange: (dateString: string) => void;
-};
+
+
+
 const { MonthPicker } = DatePicker;
 
 
 
-const BasicInfo: React.FC<BasicInfoProps> = ({ handleInputChange, handleDateChange }) => {
+const BasicInfo = () => {
+    const [basicInfo, setBasicInfo] = useState({
+        position: '',
+        name: '',
+        phone: '',
+        age: '',
+        city: '',
+        photo: '',
+        email: '',
+        wechat: '',
+      });
+
     const [imageUrl, setImageUrl] = React.useState<string | null>(null);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(addBasicInfo(basicInfo));
+    }, [dispatch]);
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        const updatedInfo = { ...basicInfo, [name]: value };
+        setBasicInfo(updatedInfo);
+        dispatch(updateBasicInfo(updatedInfo));
+    };
+
+    const handleFileChange = ({ file }) => {
+        if (file.status === 'done') {
+            // 读取文件并转换为Base64
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const base64String = e.target.result;
+                const updatedInfo = { ...basicInfo, photo: base64String };
+                setBasicInfo(updatedInfo);
+                dispatch(updateBasicInfo(updatedInfo));
+            };
+            reader.readAsDataURL(file.originFileObj);
+        }
+    };
+
+    const handleDateChange = (date, dateString) => {
+        const updatedInfo = { ...basicInfo, age: dateString };
+        setBasicInfo(updatedInfo);
+        dispatch(updateBasicInfo(updatedInfo));
+    };
 
     return (
         <div className="bg-gray-50 p-4 ml-0 w-full" id="basicInfo">
@@ -21,65 +65,59 @@ const BasicInfo: React.FC<BasicInfoProps> = ({ handleInputChange, handleDateChan
             <Form layout="horizontal">
                 <Row gutter={24}>
                     <Col span={12}>
-                        <Form.Item label="求职职位" colon={false} name="position">
-                            <Input onChange={handleInputChange} className="w-full" />
+                        <Form.Item label="求职职位" colon={false} >
+                            <Input onChange={handleInputChange} className="w-full" name="position" />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                    <Form.Item label="照片位置" colon={false} name="photo">
-              {imageUrl && <img src={imageUrl} alt="上传的照片" className="mb-2" />}
-              <Upload
-                name="logo"
-                action="/upload.do"
-                listType="picture"
-                onChange={({ file }) => {
-                  if (file.status === 'done') {
-                    setImageUrl(URL.createObjectURL(file.originFileObj));
-                  }
-                }}
-              >
-                <Button icon={<UploadOutlined />}>点击上传</Button>
-                
-              </Upload>
-            </Form.Item>
+                    <Form.Item label="照片位置" colon={false}>
+                            <Upload
+                                name="logo"
+                                listType="picture"
+                                beforeUpload={() => false} // 防止自动上传
+                                onChange={handleFileChange}
+                            >
+                                <Button icon={<UploadOutlined />}>点击上传</Button>
+                            </Upload>
+                        </Form.Item>
                     </Col>
                 </Row>
                 <Row gutter={24}>
                     <Col span={12}>
-                        <Form.Item label="姓名 &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;" colon={false} name="name">
-                            <Input onChange={handleInputChange} className="w-full" />
+                        <Form.Item label="姓名 &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;" colon={false} >
+                            <Input onChange={handleInputChange} className="w-full" name="name" />
                         </Form.Item>
                     </Col>
 
                     <Col span={12}>
-                        <Form.Item label="工作地方" colon={false} name="city">
-                            <Input onChange={handleInputChange} className="w-full" />
+                        <Form.Item label="工作地方" colon={false} >
+                            <Input onChange={handleInputChange} className="w-full" name="city"/>
                         </Form.Item>
                     </Col>
                 </Row>
                 <Row gutter={24}>
                     <Col span={12}>
-                        <Form.Item label="联系电话" colon={false} name="phone">
-                            <Input onChange={handleInputChange} className="w-full" />
+                        <Form.Item label="联系电话" colon={false} >
+                            <Input onChange={handleInputChange} className="w-full" name="phone" />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item label="电子邮箱" colon={false} name="email">
-                            <Input onChange={handleInputChange} className="w-full" />
+                        <Form.Item label="电子邮箱" colon={false} >
+                            <Input onChange={handleInputChange} className="w-full" name="email" />
                         </Form.Item>
                     </Col>
 
                 </Row>
                 <Row gutter={24}>
                     <Col span={12}>
-                        <Form.Item label="出生年月" colon={false} name="age">
-                            {/*<DatePicker style={{ width: 200 }} onChange={(date, dateString) => handleDateChange(dateString)} className="w-full" />*/}
-                            <DatePicker className="w-full"  />
+                        <Form.Item label="出生年月" colon={false} >
+                            {/*<DatePicker style={{ width: 200 }}  />*/}
+                            <DatePicker className="w-full" onChange={handleDateChange}  name="age"  />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item label="微信号 &nbsp; &nbsp;" colon={false} name="sex">
-                            <Input onChange={handleInputChange} className="w-full" />
+                        <Form.Item label="微信号 &nbsp; &nbsp;" colon={false} >
+                            <Input onChange={handleInputChange} className="w-full"  name="wechat"/>
                         </Form.Item>
                     </Col>
                 </Row>
