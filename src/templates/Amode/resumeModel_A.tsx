@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect} from 'react';
 import { Typography, Divider, Row, Col, Tag } from 'antd';
 import { PhoneOutlined, MailOutlined, UserOutlined, EnvironmentOutlined, CalendarOutlined, WechatOutlined, IdcardOutlined, PictureOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
@@ -13,6 +13,25 @@ const ResumeModel_A = ({ userInfo }) => {
     const personalProjects = useSelector(state => state.personalProjects);
     const educations = useSelector(state => state.educations);  
 
+    useEffect(() => {
+        // 设置一个定时器，60秒后执行
+        const timer = setTimeout(() => {
+            // 聚合所有状态并打印
+            const allState = {
+                basicInfo,
+                workExperiences,
+                links,
+                skills,
+                personalProjects,
+                educations,
+            };
+            console.log('All State after 60 seconds:', allState);
+        }, 10000); // 60000 毫秒 = 60 秒
+
+        // 清除定时器的清理函数
+        return () => clearTimeout(timer);
+    }, [basicInfo, workExperiences, links, skills, personalProjects, educations]);
+
     return (
         <div >
             <Title level={1} className="text-gray-800 mb-5">{userInfo.name}</Title>
@@ -25,7 +44,7 @@ const ResumeModel_A = ({ userInfo }) => {
                 <Col><Tag icon={<MailOutlined />} color="black">{basicInfo.email}</Tag></Col>
                 <Col><Tag icon={<WechatOutlined />} color="black">{basicInfo.wechat}</Tag></Col>
                 <Col><Tag icon={<UserOutlined />} color="black">{basicInfo.name}</Tag></Col>
-                <Col>{basicInfo.photo && <img src={basicInfo.photo} alt="Profile" style={{ width: '50px', height: '50px' }} />}</Col>
+                <Col> {basicInfo.photo && <img src={basicInfo.photo} alt="Profile" className="w-20  object-cover rounded-md" />}</Col>
             </Row>
 
             <Title level={3} className="text-gray-800 mb-3">自我介绍</Title>

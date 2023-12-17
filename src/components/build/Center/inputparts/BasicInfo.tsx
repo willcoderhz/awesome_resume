@@ -40,18 +40,25 @@ const BasicInfo = () => {
     };
 
     const handleFileChange = ({ file }) => {
-        if (file.status === 'done') {
-            // 读取文件并转换为Base64
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const base64String = e.target.result;
-                const updatedInfo = { ...basicInfo, photo: base64String };
-                setBasicInfo(updatedInfo);
-                dispatch(updateBasicInfo(updatedInfo));
-            };
-            reader.readAsDataURL(file.originFileObj);
+        
+    
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const base64String = e.target.result;
+            console.log(base64String); // 确认转换后的Base64字符串
+            const updatedInfo = { ...basicInfo, photo: base64String };
+            setBasicInfo(updatedInfo);
+            dispatch(updateBasicInfo(updatedInfo));
+        };
+    
+        // 直接使用 file 对象，而不是 file.originFileObj
+        if (file instanceof Blob) {
+            reader.readAsDataURL(file);
+        } else {
+            console.error('The file is not a Blob object:', file);
         }
     };
+    
 
     const handleDateChange = (date, dateString) => {
         const updatedInfo = { ...basicInfo, age: dateString };
@@ -77,7 +84,7 @@ const BasicInfo = () => {
                                 beforeUpload={() => false} // 防止自动上传
                                 onChange={handleFileChange}
                             >
-                                <Button icon={<UploadOutlined />}>点击上传</Button>
+                                <Button icon={<UploadOutlined />}  >点击上传</Button>
                             </Upload>
                         </Form.Item>
                     </Col>
