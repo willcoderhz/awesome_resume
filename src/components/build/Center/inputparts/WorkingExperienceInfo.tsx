@@ -222,19 +222,18 @@ const WorkingExperienceInfo: React.FC = () => {
 
     const style2 = {
       color: '#000',
-      padding: '0.5rem',
+      
       borderRadius: '0.5rem',
-      border: '2px dashed blue',
-      margin: '0.5rem',
-      display: 'flex',
-      minWidth: '480px', 
-      maxWidth: '480px', 
-      overflow: 'auto',
+      
+     
+   
+  
+      
       height: '100%',
-      fontSize: '14px',
+      fontSize: '20px',
       fontWeight: 'bold',
       backgroundColor: '#fff',
-      justifyContent: 'space-between',
+      
       ...props.style,
       transform: CSS.Transform.toString(transform ? { ...transform, scaleY: 1 } : undefined),
       transition,

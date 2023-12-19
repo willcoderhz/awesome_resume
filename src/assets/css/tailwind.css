@@ -2,10 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 添加到您的 CSS 文件中 */
+ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+li {
+  margin-bottom: 4px;
+}
 
 
-.w-40 {
-    width: 40%;
+.w-42 {
+    width: 42%;
+}
+
+.w-50 {
+  width: 50%;
+}
+
+.w-8 {
+  width: 8%;
 }
 
 .w-35 {
@@ -50,3 +67,15 @@
       .expanded-row {
         @apply p-4;
       }
+
+      .my-table {
+        width: 100%;
+        /* 其他样式... */
+      }
+
+     
+  
+  .ant-table-tbody > tr > td {
+    background: transparent !important;
+  }
+  

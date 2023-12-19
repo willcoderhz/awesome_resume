@@ -18,7 +18,7 @@ const Navbar = () => {
   };
 
   return (
-    <Menu mode="vertical" theme="light" className="h-screen w-17  left-0 border-r">
+    <Menu mode="vertical" theme="light" className="h-screen w-8  left-0 border-r">
       <Menu.Item 
           key="edit"
           icon={<EditOutlined />}

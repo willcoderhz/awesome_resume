@@ -67,7 +67,7 @@ const BasicInfo = () => {
     };
 
     return (
-        <div className="bg-gray-50 p-4 ml-0 w-full" id="basicInfo">
+        <div className="bg-gray-0 p-4 ml-0 w-full" id="basicInfo">
             <Typography.Title level={3} className="mb-4">基本信息</Typography.Title>
             <Form layout="horizontal">
                 <Row gutter={24}>

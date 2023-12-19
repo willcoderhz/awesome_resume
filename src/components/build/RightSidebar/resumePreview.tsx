@@ -4,7 +4,7 @@ import PreviewHeader from "./PreviewHeader";
 
 const ResumePreview = ({ userInfo }) => {
   return (
-    <div className=" right-0 w-47 h-full ">
+    <div className=" right-0  w-50 h-full ">
       <PreviewHeader />
       <TemplateSwitcher userInfo={userInfo} />
     </div>

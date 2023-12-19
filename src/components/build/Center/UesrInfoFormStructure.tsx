@@ -88,7 +88,7 @@ const UserInfoFormView = ({
   };
 
       return (
-      <div className="ml-0 z-10 w-45">
+      <div className="ml-2 z-10 w-42 mr-4">
       <div className="userInfoInput">
 
       <BasicInfo handleInputChange={handleInputChange} />

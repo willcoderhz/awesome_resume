@@ -176,13 +176,12 @@ const LinksInfo: React.FC = () => {
       padding: '0.5rem',
       borderRadius: '0.5rem',
       border: '2px dashed blue',
-      margin: '0.5rem',
-      display: 'flex',
-      minWidth: '480px', 
-      maxWidth: '480px', 
+      margin: '1rem 2rem',
+     
+  
       overflow: 'auto',
       height: '100%',
-      fontSize: '14px',
+      fontSize: '20px',
       fontWeight: 'bold',
       backgroundColor: '#fff',
       justifyContent: 'space-between',
