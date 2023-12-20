@@ -1,0 +1,6 @@
+import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
+import { Button } from 'antd';
+const ToggleButton = ({ addSelfIntroduction, addCertification, addLanguage, addHobby }) => {
+    return (_jsxs(_Fragment, { children: [_jsx("h1", { className: "text-left text-xl font-bold mb-4 mt-5 pl-3", children: "\u6DFB\u52A0\u81EA\u5B9A\u4E49\u6A21\u5757" }), _jsx(Button, { type: "primary", className: "mt-4 w-28 h-20 bg-white text-blue-500 hover:bg-blue-100 border-dashed border-blue-500 ml-3 mb-10", onClick: addSelfIntroduction, children: "\u6DFB\u52A0\u81EA\u6211\u4ECB\u7ECD" }), _jsx(Button, { type: "primary", className: "mt-4 w-28 h-20 bg-white text-blue-500 hover:bg-blue-100 border-dashed border-blue-500 ml-3 mb-10", onClick: addCertification, children: "\u6DFB\u52A0\u76F8\u5173\u8BC1\u4E66" }), _jsx(Button, { type: "primary", className: "mt-4 w-28 h-20 bg-white text-blue-500 hover:bg-blue-100 border-dashed border-blue-500 ml-3 mb-10", onClick: addLanguage, children: "\u6DFB\u52A0\u8BED\u8A00\u80FD\u529B" }), _jsx(Button, { type: "primary", className: "mt-4 w-28 h-20 bg-white text-blue-500 hover:bg-blue-100 border-dashed border-blue-500 ml-3 mb-10", onClick: addHobby, children: "\u6DFB\u52A0\u4E2A\u4EBA\u7231\u597D" })] }));
+};
+export default ToggleButton;
