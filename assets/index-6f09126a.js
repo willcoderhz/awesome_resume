@@ -1,0 +1,1 @@
+import{u as e,j as s}from"./index-17667a9a.js";const t="_index_tud4i_1",i="_modules_tud4i_4",d="_item_tud4i_4",n="_bg_tud4i_14",o={index:t,modules:i,item:d,bg:n},_=()=>e(()=>s.jsx("div",{className:o.index,children:s.jsx("h3",{children:"模块"})}));export{_ as default};
