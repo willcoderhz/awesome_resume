@@ -1,6 +1,6 @@
 import ResumeEditor from './views/ResumeEditor/ResumeEditorDisplay.tsx'
 import ResumeTemplates from './views/template/ResumeTemplate.tsx'
-import {  Route,Routes } from "react-router-dom";
+import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import ViewC from '../src/templates/Cmode/view/index.tsx'
 import ViewD from '../src/templates/Dmode/view/index.tsx'
 import Home from "./views/home/Home.tsx";
